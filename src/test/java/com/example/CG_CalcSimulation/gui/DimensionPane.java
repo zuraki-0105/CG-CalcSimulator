@@ -11,12 +11,7 @@ import javafx.scene.layout.VBox;
 
 public class DimensionPane extends VBox {
 
-//    private InputController controller;
-//    private InputDataModel model;
-
     public DimensionPane(InputController controller, InputDataModel model) {
-//        this.controller = controller;
-//        this.model = model;
 
         setSpacing(20);
         setPadding(new Insets(20));
@@ -28,7 +23,7 @@ public class DimensionPane extends VBox {
 
         RadioButton rb2D = new RadioButton("2D");
         rb2D.setToggleGroup(tg);
-        rb2D.setSelected(true);     // デフォルトを2D
+        rb2D.setSelected(true); // デフォルトを2D
 
         RadioButton rb3D = new RadioButton("3D");
         rb3D.setToggleGroup(tg);
@@ -40,12 +35,12 @@ public class DimensionPane extends VBox {
 
             // モデルに保存
             model.setDimension(selected);
-            
+
             // 次の画面へ遷移
-            if(selected.equals("2D")) {
-            	controller.switchPane(new ShapeSelectPane(controller, model));
+            if (selected.equals("2D")) {
+                controller.switchPane(new ShapeSelectPane(controller, model));
             }
-            
+
         });
 
         getChildren().addAll(title, rb2D, rb3D, nextBtn);

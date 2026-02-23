@@ -1,3 +1,5 @@
+import { toTransformCommands } from "/common/js/util.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/draw.js が読み込まれました");
 
@@ -38,21 +40,8 @@ document.addEventListener("DOMContentLoaded", () => {
             req.b = Number(sessionStorage.getItem("b"));
         }
 
-        // 変換リスト（フロントのプロパティ名 → サーバーの TransformCommand に合わせる）
-        req.transforms = queue.map(t => {
-            switch (t.type) {
-                case "translation":
-                    return { type: "translation", tx: t.tx, ty: t.ty };
-                case "scale":
-                    return { type: "scale", sx: t.sx, sy: t.sy };
-                case "rotation":
-                    return { type: "rotation", thetaDeg: t.theta };
-                case "custom":
-                    return { type: "custom", matrix: t.matrix };
-                default:
-                    return t;
-            }
-        });
+        // 変換リスト（共通関数で変換）
+        req.transforms = toTransformCommands(queue);
 
         try {
             const res = await fetch("/api/2d/draw", {

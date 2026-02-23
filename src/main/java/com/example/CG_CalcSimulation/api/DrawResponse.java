@@ -1,4 +1,4 @@
-package com.example.CG_CalcSimulation;
+package com.example.CG_CalcSimulation.api;
 
 import java.util.List;
 import com.example.CG_CalcSimulation.matrix3.Point2D;

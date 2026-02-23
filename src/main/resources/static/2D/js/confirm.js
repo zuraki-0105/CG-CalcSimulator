@@ -1,3 +1,5 @@
+import { toTransformCommands, formatTransformEntry } from "/common/js/util.js";
+
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/confirm.js が読み込まれました");
 
@@ -25,8 +27,6 @@ document.addEventListener("DOMContentLoaded", () => {
   基準点(x, y) =  (${sessionStorage.getItem("x")}, ${sessionStorage.getItem("y")})
   幅           =  ${sessionStorage.getItem("width")}
   高さ         =  ${sessionStorage.getItem("height")}`;
-
-            // html = `Rectangle<br>  基準点(x, y)  =  (${sessionStorage.getItem("x")}, ${sessionStorage.getItem("y")}),<br>  幅                     =  ${sessionStorage.getItem("width")},<br>  高さ                =  ${sessionStorage.getItem("height")}`;
         }
 
         if (shapeType === "ellipse") {
@@ -52,22 +52,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         queue.forEach((t, index) => {
             const li = document.createElement("li");
+            const entry = formatTransformEntry(t, index);
 
-            switch (t.type) {
-                case "translation":
-                    li.textContent = `${index + 1}: 平行移動 (${t.tx}, ${t.ty})`;
-                    break;
-                case "scale":
-                    li.textContent = `${index + 1}: 拡大縮小 (${t.sx}, ${t.sy})`;
-                    break;
-                case "rotation":
-                    li.textContent = `${index + 1}: 回転 (${t.theta}°)`;
-                    break;
-                case "custom":
-                    const matrixText =
-                        "{ " + t.matrix.map(r => r.join(", ")).join("\n  ") + " }";
-                    li.innerHTML = `${index + 1}: 任意行列<br>${matrixText}<br>`;
-                    break;
+            if (entry.isHtml) {
+                li.innerHTML = entry.text;
+            } else {
+                li.textContent = entry.text;
             }
 
             listElem.appendChild(li);
@@ -86,21 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // フロントエンドのプロパティ名をサーバーの TransformCommand に合わせて変換
-        const commands = queue.map(t => {
-            switch (t.type) {
-                case "translation":
-                    return { type: "translation", tx: t.tx, ty: t.ty };
-                case "scale":
-                    return { type: "scale", sx: t.sx, sy: t.sy };
-                case "rotation":
-                    return { type: "rotation", thetaDeg: t.theta };
-                case "custom":
-                    return { type: "custom", matrix: t.matrix };
-                default:
-                    return t;
-            }
-        });
+        const commands = toTransformCommands(queue);
 
         try {
             const res = await fetch("/api/2d/compose-matrix", {
@@ -126,17 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("合成行列の取得に失敗:", err);
             div.textContent = "行列の計算に失敗しました";
         }
-    }
-
-    function buildRequestData() {
-        return {
-            dimension: "2D",
-            shape: {
-                type: sessionStorage.getItem("shapeType"),
-                params: {}
-            },
-            transforms: JSON.parse(sessionStorage.getItem("transformQueue"))
-        };
     }
 
 });

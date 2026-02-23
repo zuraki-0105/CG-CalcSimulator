@@ -1,4 +1,4 @@
-package com.example.CG_CalcSimulation;
+package com.example.CG_CalcSimulation.api;
 
 public class TransformCommand {
 

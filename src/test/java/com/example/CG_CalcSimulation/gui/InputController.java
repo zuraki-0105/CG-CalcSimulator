@@ -21,11 +21,6 @@ public class InputController {
         model = new InputDataModel();
 
         dimensionPane = new DimensionPane(this, model);
-//        shapeSelectPane = new ShapeSelectPane(this, model);
-//        shapeParamPane = new ShapeParamPane(this, model);
-//        transformPane = new TransformPane(this, model);
-//        confirmPane = new ConfirmPane(this, model);
-//        drawingPane = new DrawingPane();
 
         // 最初の画面
         switchPane(dimensionPane);

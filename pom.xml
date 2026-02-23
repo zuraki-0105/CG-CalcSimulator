@@ -53,16 +53,18 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- JavaFX -->
+		<!-- JavaFX (test scope — GUI demo code in src/test) -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
 			<version>17.0.6</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-fxml</artifactId>
 			<version>17.0.6</version>
+			<scope>test</scope>
 		</dependency>
 
 		<!-- EJML for Matrix math -->

@@ -3,6 +3,7 @@ package com.example.CG_CalcSimulation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.CG_CalcSimulation.api.TransformCommand;
 import com.example.CG_CalcSimulation.matrix3.Point2D;
 
 public class InputDataModel {
@@ -10,22 +11,18 @@ public class InputDataModel {
     // 1. Dimension（2D/3D）
     private String dimension;
 
-
     // 2. Shape Type
     private String shapeType;
-
 
     // 3. Rectangle Parameters
     private Point2D base;
     private Double width;
     private Double height;
 
-
     // 4. Circle/Ellipse Parameters
     private Point2D center;
-    private Double semiMajorA;  // a
-    private Double semiMinorB;  // b
-
+    private Double semiMajorA; // a
+    private Double semiMinorB; // b
 
     // -------------------------
     // 5. Transform Parameters
@@ -36,8 +33,7 @@ public class InputDataModel {
     private Double scaleX;
     private Double scaleY;
 
-    private Double rotateDeg;  // rotation angle in degree
-
+    private Double rotateDeg; // rotation angle in degree
 
     // 6. (Optional) Matrix3 (3×3)
     // Web連携のため List<double[]> 形式推奨
@@ -47,8 +43,8 @@ public class InputDataModel {
     private List<TransformCommand> transformCommands = new ArrayList<TransformCommand>();
 
     // ========== Constructor ==========
-    public InputDataModel() {}
-
+    public InputDataModel() {
+    }
 
     // ========== Getter & Setter ==========
 
@@ -163,7 +159,7 @@ public class InputDataModel {
     public void setMatrix3Elements(double[][] matrix3Elements) {
         this.matrix3Elements = matrix3Elements;
     }
-    
+
     public List<TransformCommand> getTransformCommands() {
         return transformCommands;
     }
@@ -172,4 +168,3 @@ public class InputDataModel {
         this.transformCommands = trcmd;
     }
 }
-

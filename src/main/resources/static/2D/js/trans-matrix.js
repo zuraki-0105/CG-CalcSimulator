@@ -1,4 +1,4 @@
-import { clearInputs, setInputs } from "/common/js/util.js";
+import { clearInputs, setInputs, formatTransformEntry } from "/common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/trans-matrix.js が読み込まれました");
@@ -16,13 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let transformQueue = [];
     sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
-
-    // // 初期ロード時に復元
-    // const saved = sessionStorage.getItem("transformQueue");
-    // if (saved) {
-    //     transformQueue = JSON.parse(saved);
-    //     renderList();
-    // }
 
     addBtn.addEventListener("click", () => {
         const transform = transformSelect.value;
@@ -116,12 +109,6 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
 
         renderList();
-
-
-
-
-
-
     });
 
     transformSelect.addEventListener("change", () => {
@@ -149,7 +136,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nextBtn.addEventListener("click", () => {
-        // 次の画面へ
         location.href = "/2d/html/confirm.html";
     });
 
@@ -170,20 +156,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const textSpan = document.createElement("span");
             textSpan.classList.add("transform-text");
 
-            switch (t.type) {
-                case "translation":
-                    textSpan.textContent = `${index + 1}: 平行移動 (${t.tx}, ${t.ty})`;
-                    break;
-                case "scale":
-                    textSpan.textContent = `${index + 1}: 拡大縮小 (${t.sx}, ${t.sy})`;
-                    break;
-                case "rotation":
-                    textSpan.textContent = `${index + 1}:  回  転  (${t.theta}°)`;
-                    break;
-                case "custom":
-                    const matrixText = "{ " + t.matrix.map(row => row.join(", ")).join("\n  ") + " }";
-                    textSpan.innerHTML = `${index + 1}: 任意行列<br>${matrixText}<br>`;
-                    break;
+            const entry = formatTransformEntry(t, index);
+            if (entry.isHtml) {
+                textSpan.innerHTML = entry.text;
+            } else {
+                textSpan.textContent = entry.text;
             }
 
             const deleteBtn = document.createElement("button");
@@ -201,33 +178,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // function clearInputs(type) {
-    //     switch (type) {
-    //         case "translation":
-    //             document.getElementById("tx").value = "";
-    //             document.getElementById("ty").value = "";
-    //             break;
-
-    //         case "scale":
-    //             document.getElementById("sx").value = "";
-    //             document.getElementById("sy").value = "";
-    //             break;
-
-    //         case "rotation":
-    //             document.getElementById("theta").value = "";
-    //             break;
-
-    //         case "custom":
-    //             for (let i = 0; i < 3; i++) {
-    //                 for (let j = 0; j < 3; j++) {
-    //                     document.getElementById(`m${i}${j}`).value = "";
-    //                 }
-    //             }
-    //             break;
-    //     }
-    // } 
-
 });
-
-
-

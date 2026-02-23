@@ -20,7 +20,7 @@ public class Matrix3 {
 	}
 
 	public Matrix3(DMatrixRMaj m) {
-		if (m.getNumCols() != 3 || m.getNumCols() != 3) {
+		if (m.getNumRows() != 3 || m.getNumCols() != 3) {
 			throw new IllegalArgumentException("3×3行列でなければなりません!");
 		}
 		this.matrix = m;
