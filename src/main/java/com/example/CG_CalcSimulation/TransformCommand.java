@@ -2,15 +2,17 @@ package com.example.CG_CalcSimulation;
 
 public class TransformCommand {
 
-    private String type = "";  // "translate", "scale", "rotate"
+    private String type = ""; // "translate", "scale", "rotate"
 
-    private Double tx = 0d;     // translate X
-    private Double ty = 0d;     // translate Y
+    private Double tx = 0d; // translate X
+    private Double ty = 0d; // translate Y
 
-    private Double sx = 1d;     // scale X
-    private Double sy = 1d;     // scale Y
+    private Double sx = 1d; // scale X
+    private Double sy = 1d; // scale Y
 
-    private Double thetaDeg = 0d;  // rotation angle (degree)
+    private Double thetaDeg = 0d; // rotation angle (degree)
+
+    private double[][] matrix; // custom matrix (3×3)
 
     public TransformCommand() {
         // デフォルトコンストラクタ（JSON用）
@@ -88,5 +90,13 @@ public class TransformCommand {
 
     public void setThetaDeg(Double thetaDeg) {
         this.thetaDeg = thetaDeg;
+    }
+
+    public double[][] getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(double[][] matrix) {
+        this.matrix = matrix;
     }
 }

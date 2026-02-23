@@ -1,81 +1,87 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>CG 投影変換シミュレーター</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/2d/css/trans-matrix.css">
-    </head>
 
-    <body>
-        <h1>2D 幾何変換行列入力</h1>
-        <p>投影変換を選択してください。</p>
+<head>
+    <meta charset="UTF-8">
+    <title>CG 投影変換シミュレーター</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/css/common.css">
+    <link rel="stylesheet" href="/2d/css/trans-matrix.css">
+</head>
 
-        <select id="transformType">
-            <option value="">--- 選択してください ---</option>
-            <option value="translation">平行移動</option>
-            <option value="scale">拡大縮小</option>
-            <option value="rotation">回転(deg)</option>
-            <option value="custom">任意の変換行列</option>
-        </select>
-        <br><hr><br>
+<body>
+    <h1>2D 幾何変換行列入力</h1>
+    <p>投影変換を選択してください。</p>
 
-        <div id="translationMatrix" class="hidden">
-            <label>tx： 
-                <input type="number" id="tx" step="any" value="0">
-            </label><br>
+    <select id="transformType">
+        <option value="">--- 選択してください ---</option>
+        <option value="translation">平行移動</option>
+        <option value="scale">拡大縮小</option>
+        <option value="rotation">回転(deg)</option>
+        <option value="custom">任意の変換行列</option>
+    </select>
 
-            <label>ty： 
-                <input type="number" id="ty" step="any" value="0">
-            </label>
+    <hr>
+
+    <div id="translationMatrix" class="hidden">
+        <label>tx：
+            <input type="number" id="tx" step="any" value="0">
+        </label>
+        <label>ty：
+            <input type="number" id="ty" step="any" value="0">
+        </label>
+    </div>
+
+    <div id="scaleMatrix" class="hidden">
+        <label>sx：
+            <input type="number" id="sx" step="any" value="1">
+        </label>
+        <label>sy：
+            <input type="number" id="sy" step="any" value="1">
+        </label>
+    </div>
+
+    <div id="rotationMatrix" class="hidden">
+        <label>θ(deg)：
+            <input type="number" id="theta" step="any" value="0">
+        </label>
+    </div>
+
+    <div id="customMatrix" class="hidden">
+        <label>任意の 3×3 変換行列</label>
+        <div class="matrix-grid">
+            <input type="number" id="m00" step="any" value="1">
+            <input type="number" id="m01" step="any" value="0">
+            <input type="number" id="m02" step="any" value="0">
+
+            <input type="number" id="m10" step="any" value="0">
+            <input type="number" id="m11" step="any" value="1">
+            <input type="number" id="m12" step="any" value="0">
+
+            <input type="number" id="m20" step="any" value="0">
+            <input type="number" id="m21" step="any" value="0">
+            <input type="number" id="m22" step="any" value="1">
         </div>
+        <p>※ 同次座標行列（通常は最下行が 0 0 1）</p>
+    </div>
 
-        <div id="scaleMatrix" class="hidden">
-            <label>sx： 
-                <input type="number" id="sx" step="any" value="1">
-            </label><br>
+    <hr>
 
-            <label>sy： 
-                <input type="number" id="sy" step="any" value="1">
-            </label>
-
-        </div>
-
-        <div id="rotationMatrix" class="hidden">
-            <label>θ(deg)： 
-                <input type="number" id="theta" step="any" value="0">
-            </label><br>
-        </div>
-
-        <div id="customMatrix" class="hidden">
-            <label>任意の 3×3 変換行列</label><br>
-            <div class="matrix-grid">
-                <input type="number" id="m00" step="any" value="1">
-                <input type="number" id="m01" step="any" value="0">
-                <input type="number" id="m02" step="any" value="0">
-
-                <input type="number" id="m10" step="any" value="0">
-                <input type="number" id="m11" step="any" value="1">
-                <input type="number" id="m12" step="any" value="0">
-
-                <input type="number" id="m20" step="any" value="0">
-                <input type="number" id="m21" step="any" value="0">
-                <input type="number" id="m22" step="any" value="1">
-            </div>
-
-            <p style="font-size: 0.9em;">※ 同次座標行列（通常は最下行が 0 0 1）</p>
-        </div>
-
-        <br><hr><br>
+    <div class="btn-group">
         <button type="button" id="addBtn">追加</button>
-        <ul id="transformList"></ul>
-        <br><br>
+    </div>
 
+    <ul id="transformList"></ul>
+
+    <hr>
+
+    <div class="btn-group">
         <button type="button" id="nextBtn">次へ</button>
-        <br><br>
         <button type="button" id="backBtn">戻る</button>
-        
-        <script src="/common/js/util.js" type="module"></script>
-        <script src="/2d/js/trans-matrix.js" type="module"></script>
-    </body>
+    </div>
+
+    <script src="/common/js/util.js" type="module"></script>
+    <script src="/2d/js/trans-matrix.js" type="module"></script>
+</body>
+
 </html>

@@ -1,34 +1,42 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <title>CG 投影変換シミュレーター</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/2d/css/confirm.css">
-    </head>
 
-    <body>
-        <h1>2D 入力内容確認</h1>
-        <section>
-            <h3>図形情報</h3>
-            <div id="shapeInfo"></div>
-        </section>
-        
-        <br><hr>
+<head>
+    <meta charset="UTF-8">
+    <title>CG 投影変換シミュレーター</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/css/common.css">
+    <link rel="stylesheet" href="/2d/css/confirm.css">
+</head>
 
-        <section>
-            <h3>変換行列</h3>
-            <ul id="transformList"></ul>
-        </section>
-        
-        
-    </body>
+<body>
+    <h1>2D 入力内容確認</h1>
 
+    <section>
+        <h3>図形情報</h3>
+        <div id="shapeInfo"></div>
+    </section>
 
-    <br><hr><br>
-    <button type="button" id="sendBtn">描画</button>
-    <br><br>
-    <button type="button" id="backBtn">戻る</button>
+    <hr>
+
+    <section>
+        <h3>変換行列</h3>
+        <ul id="transformList"></ul>
+    </section>
+
+    <section>
+        <h3>合成変換行列M</h3>
+        <div id="composedMatrix">計算中...</div>
+    </section>
+
+    <hr>
+
+    <div class="btn-group">
+        <button type="button" id="sendBtn">描画</button>
+        <button type="button" id="backBtn">戻る</button>
+    </div>
 
     <script src="/2d/js/confirm.js"></script>
+</body>
+
 </html>

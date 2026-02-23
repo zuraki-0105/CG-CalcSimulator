@@ -6,13 +6,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const transformSelect = document.getElementById("transformType");
 
     const translationParams = document.getElementById("translationMatrix");
-    const scaleParams       = document.getElementById("scaleMatrix");
-    const rotationParams    = document.getElementById("rotationMatrix");
-    const customParams      = document.getElementById("customMatrix");
-    const addBtn            = document.getElementById("addBtn");
-    const listElem          = document.getElementById("transformList");
-    const nextBtn           = document.getElementById("nextBtn");
-    const backBtn           = document.getElementById("backBtn");
+    const scaleParams = document.getElementById("scaleMatrix");
+    const rotationParams = document.getElementById("rotationMatrix");
+    const customParams = document.getElementById("customMatrix");
+    const addBtn = document.getElementById("addBtn");
+    const listElem = document.getElementById("transformList");
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
 
     let transformQueue = [];
     sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
@@ -167,23 +167,36 @@ document.addEventListener("DOMContentLoaded", () => {
         transformQueue.forEach((t, index) => {
             const li = document.createElement("li");
 
+            const textSpan = document.createElement("span");
+            textSpan.classList.add("transform-text");
+
             switch (t.type) {
                 case "translation":
-                    li.textContent = `${index + 1}: 平行移動 (${t.tx}, ${t.ty})`;
+                    textSpan.textContent = `${index + 1}: 平行移動 (${t.tx}, ${t.ty})`;
                     break;
                 case "scale":
-                    li.textContent = `${index + 1}: 拡大縮小 (${t.sx}, ${t.sy})`;
+                    textSpan.textContent = `${index + 1}: 拡大縮小 (${t.sx}, ${t.sy})`;
                     break;
                 case "rotation":
-                    li.textContent = `${index + 1}:  回  転  (${t.theta}°)`;
+                    textSpan.textContent = `${index + 1}:  回  転  (${t.theta}°)`;
                     break;
                 case "custom":
                     const matrixText = "{ " + t.matrix.map(row => row.join(", ")).join("\n  ") + " }";
-                    // 改行をそのまま表示するため <pre> を使う
-                    li.innerHTML = `${index + 1}: 任意行列<br><pre>${matrixText}</pre>`;
+                    textSpan.innerHTML = `${index + 1}: 任意行列<br>${matrixText}<br>`;
                     break;
             }
 
+            const deleteBtn = document.createElement("button");
+            deleteBtn.textContent = "削除";
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.addEventListener("click", () => {
+                transformQueue.splice(index, 1);
+                sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
+                renderList();
+            });
+
+            li.appendChild(textSpan);
+            li.appendChild(deleteBtn);
             listElem.appendChild(li);
         });
     }

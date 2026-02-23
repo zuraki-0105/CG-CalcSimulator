@@ -1,0 +1,36 @@
+/* draw.html 固有スタイル */
+
+/* Canvas コンテナ */
+#canvasContainer {
+    display: inline-block;
+    margin-bottom: 8px;
+}
+
+/* 凡例 */
+#legend {
+    margin-top: 12px;
+    font-size: 0.9rem;
+}
+
+.legend-item {
+    margin-right: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 28px;
+    height: 3px;
+    border-radius: 2px;
+}
+
+.legend-original {
+    background: none;
+    border-top: 2.5px dashed #999;
+}
+
+.legend-transformed {
+    background-color: #d9534f;
+}

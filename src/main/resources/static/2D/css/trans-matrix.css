@@ -1,32 +1,78 @@
+/* trans-matrix.html 固有スタイル */
+/* .hidden は common.css で定義済み */
 
-.hidden {
-    display: none;
-}
-
+/* 行列グリッド */
 .matrix-grid {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
-    gap: 6px;
+    grid-template-columns: repeat(3, 90px);
+    gap: 8px;
+    margin-top: 8px;
 }
 
 .matrix-grid input {
     text-align: center;
+    width: 90px;
 }
 
+/* 変換パラメータセクション */
+#translationMatrix,
+#scaleMatrix,
+#rotationMatrix,
+#customMatrix {
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-top: 8px;
+}
+
+/* 変換リスト */
 #transformList {
     white-space: pre;
+    line-height: 1.7;
+    font-size: 0.875rem;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: #f8fafc;
+    padding: 12px 16px 12px 3ch;
+    max-width: 480px;
+    margin-top: 12px;
+}
 
-    
-    line-height: 1.6;
+#transformList li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
 
-    font-size: 14px;
-    font-family: monospace;
+.transform-text {
+    flex: 1;
+}
 
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    padding-top: 8px;
-    padding-bottom: 8px;
-    padding-left: 5ch;
-    
-    
+/* 削除ボタン */
+.delete-btn {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: var(--color-danger);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background var(--transition);
+    min-width: auto;
+    margin-right: 8px;
+}
+
+.delete-btn:hover {
+    background: var(--color-danger-hover);
+}
+
+/* 注釈テキスト */
+#customMatrix p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-top: 8px;
 }

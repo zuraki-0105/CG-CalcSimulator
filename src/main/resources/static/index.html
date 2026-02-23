@@ -1,29 +1,31 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="UTF-8">
-    <title>CG 投影変換シミュレーター</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  </head>
 
-  <body>
-    <h1>CG 投影変換シミュレーター</h1>
-    <p>次元を選択してください。</p>
+<head>
+  <meta charset="UTF-8">
+  <title>CG 投影変換シミュレーター</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/common/css/common.css">
+</head>
 
-    <form id="dimensionForm">
+<body>
+  <h1>CG 投影変換シミュレーター</h1>
+  <p>次元を選択してください。</p>
 
-      <label>
-        <input type="radio" name="dimension" value="2D" checked> 2D
-      </label>
-      <br>
-      <label>
-        <input type="radio" name="dimension" value="3D"> 3D
-      </label>
-      <br><hr><br>
+  <form id="dimensionForm">
+    <label>
+      <input type="radio" name="dimension" value="2D" checked> 2D
+    </label>
+    <label>
+      <input type="radio" name="dimension" value="3D"> 3D
+    </label>
+
+    <hr>
+    <div class="btn-group">
       <button type="button" id="nextBtn">次へ</button>
-      
+    </div>
+  </form>
+  <script src="/2d/js/index.js"></script>
+</body>
 
-    </form>
-    <script src="/2d/js/index.js"></script>
-  </body>
 </html>

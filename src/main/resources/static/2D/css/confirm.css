@@ -1,39 +1,40 @@
+/* confirm.html 固有スタイル */
+
+/* 図形情報パネル */
 #shapeInfo {
-  /* 改行・空白をそのまま表示 */
   white-space: pre;
-
-  /* 等幅フォント（超重要） */
-  font-family: Consolas, "Courier New", monospace;
-
-  /* 左インデント（先頭2スペース相当） */
-  padding-left: 2ch;
-
-  /* 見やすさ（任意） */
-  line-height: 1.6;
-  font-size: 16px;
-
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
-  padding-top: 8px;
-  padding-bottom: 8px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  padding: 12px 16px;
+  line-height: 1.7;
+  font-size: 0.95rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  max-width: 480px;
 }
 
+/* 変換リスト */
 #transformList {
-    /* 改行・空白をそのまま表示 */
-    white-space: pre;
-    
-    /* 等幅フォント（超重要） */
-    font-family: Consolas, "Courier New", monospace;
-    
-    /* 左インデント（先頭2スペース相当） */
-    padding-left: 5ch;
-    
-    /* 見やすさ（任意） */
-    line-height: 1.6;
-    font-size: 14px;
-    
-    border: 1px solid #ccc;
-    background-color: #f9f9f9;
-    padding-top: 8px;
-    padding-bottom: 8px;
+  white-space: pre;
+  font-family: 'Consolas', 'Courier New', monospace;
+  padding: 12px 16px 12px 3ch;
+  line-height: 1.7;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  max-width: 480px;
+}
+
+/* 合成行列パネル */
+#composedMatrix {
+  white-space: pre;
+  font-family: 'Consolas', 'Courier New', monospace;
+  padding: 12px 16px;
+  line-height: 1.7;
+  font-size: 0.875rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #f8fafc;
+  max-width: 480px;
 }

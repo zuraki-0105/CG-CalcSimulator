@@ -1,4 +1,17 @@
+/* shape.html 固有スタイル */
+/* .hidden は common.css で定義済み */
 
-.hidden {
-    display: none;
+/* パラメータセクション */
+#rectParams,
+#ellipseParams {
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-top: 8px;
+}
+
+#rectParams label,
+#ellipseParams label {
+    margin-bottom: 10px;
 }
