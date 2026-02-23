@@ -1,4 +1,4 @@
-import { clearInputs } from "/common/js/util.js";
+import { clearInputs, setInputs } from "/common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/trans-matrix.js が読み込まれました");
@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const backBtn           = document.getElementById("backBtn");
 
     let transformQueue = [];
+    sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
 
     // // 初期ロード時に復元
     // const saved = sessionStorage.getItem("transformQueue");
@@ -38,11 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 const tx = document.getElementById("tx").valueAsNumber;
                 const ty = document.getElementById("ty").valueAsNumber;
                 if (Number.isNaN(tx) || Number.isNaN(ty)) {
-                    alert("Input tx, ty");
+                    alert("Input Tx, Ty");
+                    return;
+                }
+                if (tx === 0 && ty === 0) {
+                    alert("Setting both Tx, Ty to \"0\" has no effect.");
                     return;
                 }
                 entry = { type: "translation", tx, ty };
                 clearInputs(translationParams);
+                setInputs(translationParams, [0, 0]);
                 break;
             }
 
@@ -50,27 +56,37 @@ document.addEventListener("DOMContentLoaded", () => {
                 const sx = document.getElementById("sx").valueAsNumber;
                 const sy = document.getElementById("sy").valueAsNumber;
                 if (Number.isNaN(sx) || Number.isNaN(sy)) {
-                    alert("Input sx, sy");
+                    alert("Input Sx, Sy");
                     return;
                 }
-                if(sx <= 0 || sy <= 0 ) {
-                    alert("Must sx, sy > 0");
+                if (sx <= 0 || sy <= 0) {
+                    alert("Must Sx, Sy > 0");
+                    return;
+                }
+                if (sx === 1 && sy === 1) {
+                    alert("Setting both Sx, Sy to \"1\" has no effect.");
                     return;
                 }
 
                 entry = { type: "scale", sx, sy };
                 clearInputs(scaleParams);
+                setInputs(scaleParams, [1, 1]);
                 break;
             }
 
             case "rotation": {
                 const theta = document.getElementById("theta").valueAsNumber;
                 if (Number.isNaN(theta)) {
-                    alert("Input theta");
+                    alert("Input Theta");
+                    return;
+                }
+                if (theta === 0) {
+                    alert("Setting Theta to \"0\" has no effect.");
                     return;
                 }
                 entry = { type: "rotation", theta };
                 clearInputs(rotationParams);
+                setInputs(rotationParams, [0]);
                 break;
             }
 
@@ -90,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
                 entry = { type: "custom", matrix };
                 clearInputs(customParams);
+                setInputs(customParams, [1, 0, 0, 0, 1, 0, 0, 0, 1]);
                 break;
             }
         }
@@ -99,11 +116,11 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
 
         renderList();
-        
-        
-        
-        
-        
+
+
+
+
+
 
     });
 
@@ -152,13 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
             switch (t.type) {
                 case "translation":
-                    li.textContent = `${index+1}: 平行移動 (${t.tx}, ${t.ty})`;
+                    li.textContent = `${index + 1}: 平行移動 (${t.tx}, ${t.ty})`;
                     break;
                 case "scale":
-                    li.textContent = `${index+1}: 拡大縮小 (${t.sx}, ${t.sy})`;
+                    li.textContent = `${index + 1}: 拡大縮小 (${t.sx}, ${t.sy})`;
                     break;
                 case "rotation":
-                    li.textContent = `${index+1}:  回  転  (${t.theta}°)`;
+                    li.textContent = `${index + 1}:  回  転  (${t.theta}°)`;
                     break;
                 case "custom":
                     const matrixText = "{ " + t.matrix.map(row => row.join(", ")).join("\n  ") + " }";
