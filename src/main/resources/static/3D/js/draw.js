@@ -240,6 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const config = {
+            responsive: true,
             scrollZoom: true,
             displayModeBar: true,
             modeBarButtonsToRemove: ["lasso2d", "select2d"],
@@ -291,6 +292,7 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const config = {
+            responsive: true,
             scrollZoom: true,
             displayModeBar: true,
             modeBarButtonsToRemove: ["lasso2d", "select2d"],

@@ -2,7 +2,17 @@
 
 /* Plotly チャートコンテナ */
 #plotArea {
+    width: 620px;
+    height: 620px;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: 8px;
+}
+
+@media screen and (max-width: 620px) {
+    #plotArea {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        height: auto;
+    }
 }
