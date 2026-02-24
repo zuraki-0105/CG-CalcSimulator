@@ -1,0 +1,14 @@
+/* 3D shape.html 固有スタイル */
+
+#cuboidParams {
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-top: 8px;
+}
+
+#cuboidParams label {
+    margin-bottom: 10px;
+    display: block;
+}

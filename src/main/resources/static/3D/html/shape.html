@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CG 投影変換シミュレーター (3D)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/css/common.css">
+    <link rel="stylesheet" href="/3D/css/shape.css">
+</head>
+
+<body>
+    <h1>3D 図形選択</h1>
+    <p>図形を選択してください。</p>
+
+    <select id="shapeType">
+        <option value="">--- 選択してください ---</option>
+        <option value="cuboid">直方体 / 立方体</option>
+    </select>
+
+    <hr>
+
+    <div id="cuboidParams" class="hidden">
+        <h3>直方体のパラメータ</h3>
+        <label>基準点(左下奥) X：
+            <input type="number" id="cuboidX" step="any" value="0">
+        </label>
+        <label>基準点(左下奥) Y：
+            <input type="number" id="cuboidY" step="any" value="0">
+        </label>
+        <label>基準点(左下奥) Z：
+            <input type="number" id="cuboidZ" step="any" value="0">
+        </label>
+        <label>幅(X方向)：
+            <input type="number" id="cuboidWidth" step="any" value="1">
+        </label>
+        <label>高さ(Y方向)：
+            <input type="number" id="cuboidHeight" step="any" value="1">
+        </label>
+        <label>奥行き(Z方向)：
+            <input type="number" id="cuboidDepth" step="any" value="1">
+        </label>
+    </div>
+
+    <hr>
+    <div class="btn-group">
+        <button type="button" id="nextBtn" class="btn-primary">次へ</button>
+        <button type="button" id="backBtn" class="btn-secondary">戻る</button>
+    </div>
+
+    <script src="/common/js/util.js" type="module"></script>
+    <script src="/3D/js/shape.js" type="module"></script>
+</body>
+
+</html>

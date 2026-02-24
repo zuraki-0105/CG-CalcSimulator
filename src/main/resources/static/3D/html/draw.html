@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CG 投影変換シミュレーター (3D)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/css/common.css">
+    <link rel="stylesheet" href="/3D/css/draw.css">
+</head>
+
+<body>
+    <h1>3D 描画結果</h1>
+
+    <div id="canvasContainer3D">
+        <div class="canvas-wrapper">
+            <h3>変換前 (立体斜め投影)</h3>
+            <canvas id="drawCanvasBefore" width="480" height="480"></canvas>
+            <div class="legend-local">
+                <span class="legend-color legend-original"></span> 変換前ワイヤーフレーム
+            </div>
+        </div>
+        <div class="canvas-wrapper">
+            <h3>変換後 (Z=<span id="targetZText"></span> XY平面投影)</h3>
+            <canvas id="drawCanvasAfter" width="480" height="480"></canvas>
+            <div class="legend-local">
+                <span class="legend-color legend-transformed"></span> 変換後ワイヤーフレーム
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <div class="btn-group">
+        <button type="button" id="backBtn" class="btn-secondary">戻る</button>
+        <button type="button" id="resetBtn" class="btn-danger">はじめから</button>
+    </div>
+
+    <script src="/3D/js/draw.js" type="module"></script>
+</body>
+
+</html>
