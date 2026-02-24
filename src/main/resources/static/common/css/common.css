@@ -329,14 +329,14 @@ br+hr {
     .info-panel {
         max-width: 100%;
         overflow-x: auto;
+    }
 
-        /* Responsive canvas containers */
-        #plotArea,
-        #plotBefore,
-        #plotAfter {
-            width: 100% !important;
-            height: auto !important;
-            max-width: 100%;
-        }
+    /* Responsive canvas containers */
+    #plotArea,
+    #plotBefore,
+    #plotAfter {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100%;
     }
 }
