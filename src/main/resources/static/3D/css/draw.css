@@ -25,33 +25,9 @@
     color: var(--color-text);
 }
 
-canvas {
+/* Plotly div */
+#plotBefore,
+#plotAfter {
     border: 1px solid #ddd;
-    background-color: #fafafa;
     border-radius: 4px;
-}
-
-/* 凡例 */
-.legend-local {
-    margin-top: 15px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.legend-color {
-    display: inline-block;
-    width: 28px;
-    height: 3px;
-    border-radius: 2px;
-}
-
-.legend-original {
-    background: none;
-    border-top: 2.5px dashed #999;
-}
-
-.legend-transformed {
-    background-color: #d9534f;
 }

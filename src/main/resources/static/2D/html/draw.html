@@ -7,23 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/common/css/common.css">
     <link rel="stylesheet" href="/2d/css/draw.css">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
 </head>
 
 <body>
     <h1>2D 描画結果</h1>
 
-    <div id="canvasContainer">
-        <canvas id="drawCanvas" width="600" height="600"></canvas>
-    </div>
-
-    <div id="legend">
-        <span class="legend-item">
-            <span class="legend-color legend-original"></span> 変換前
-        </span>
-        <span class="legend-item">
-            <span class="legend-color legend-transformed"></span> 変換後
-        </span>
-    </div>
+    <div id="plotArea" style="width:620px; height:620px;"></div>
 
     <hr>
 
