@@ -139,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         const config = {
-            responsive: true,
             scrollZoom: true,       // マウスホイールでズーム
             displayModeBar: true,
             modeBarButtonsToRemove: ["lasso2d", "select2d"],

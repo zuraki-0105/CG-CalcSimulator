@@ -48,17 +48,3 @@ label {
 .radio-group input[type="radio"] {
     margin-right: -6px
 }
-
-@media screen and (max-width: 768px) {
-
-    #shapeInfo,
-    #transformList,
-    #composedMatrix {
-        max-width: 100%;
-        overflow-x: auto;
-    }
-
-    .radio-group label {
-        flex-direction: row;
-    }
-}

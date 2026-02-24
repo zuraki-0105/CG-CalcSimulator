@@ -20,14 +20,13 @@ label {
 /* 4x4 matrix grid */
 .matrix-grid-4 {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 60px);
     gap: 8px;
     margin-top: 10px;
-    max-width: 300px;
 }
 
 .matrix-grid-4 input {
-    width: 100%;
+    width: 60px;
     text-align: right;
 }
 
@@ -64,15 +63,4 @@ label {
 
 .delete-btn:hover {
     background: #be123c;
-}
-
-@media screen and (max-width: 768px) {
-    .matrix-grid-4 {
-        max-width: 100%;
-    }
-
-    #transformList li {
-        flex-wrap: wrap;
-        gap: 8px;
-    }
 }

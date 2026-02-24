@@ -4,15 +4,14 @@
 /* 行列グリッド */
 .matrix-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 90px);
     gap: 8px;
     margin-top: 8px;
-    max-width: 300px;
 }
 
 .matrix-grid input {
     text-align: center;
-    width: 100%;
+    width: 90px;
 }
 
 /* 変換パラメータセクション */
@@ -76,15 +75,4 @@
     font-size: 0.85rem;
     color: var(--color-text-muted);
     margin-top: 8px;
-}
-
-@media screen and (max-width: 768px) {
-    .matrix-grid {
-        max-width: 100%;
-    }
-
-    #transformList {
-        max-width: 100%;
-        overflow-x: auto;
-    }
 }
