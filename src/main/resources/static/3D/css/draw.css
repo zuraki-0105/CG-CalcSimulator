@@ -38,9 +38,10 @@
 
     #plotBefore,
     #plotAfter {
-        width: 100%;
-        aspect-ratio: 1 / 1;
-        height: auto;
+        width: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        max-height: 500px;
     }
 
     #canvasContainer3D {
@@ -50,5 +51,7 @@
 
     .canvas-wrapper {
         width: 100%;
+        padding: 5px;
+        /* Reduce padding on mobile */
     }
 }
