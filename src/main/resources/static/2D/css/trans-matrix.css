@@ -1,17 +1,33 @@
 /* trans-matrix.html 固有スタイル */
 /* .hidden は common.css で定義済み */
 
-/* 行列グリッド */
+/* 行列グリッド (Flexbox fallback) */
 .matrix-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 90px);
+    display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 8px;
+    width: fit-content;
+    max-width: 100%;
 }
 
 .matrix-grid input {
     text-align: center;
-    width: 90px;
+    width: 90px !important;
+    flex: 0 0 90px !important;
+}
+
+@media screen and (max-width: 600px) {
+    .matrix-grid {
+        width: 100%;
+    }
+
+    .matrix-grid input {
+        /* 3 items per row with 2 gaps of 8px */
+        width: calc(33.33% - 6px) !important;
+        flex: 0 0 calc(33.33% - 6px) !important;
+        min-width: 0;
+    }
 }
 
 /* 変換パラメータセクション */

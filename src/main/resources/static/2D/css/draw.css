@@ -12,8 +12,9 @@
 @media screen and (max-width: 620px) {
     #plotArea {
         width: 100% !important;
-        height: auto !important;
-        aspect-ratio: 1 / 1 !important;
+        height: calc(100vw - 40px) !important;
+        /* Fallback for WebView */
+        aspect-ratio: auto !important;
         max-height: 620px;
     }
 }
