@@ -33,26 +33,3 @@
     border: 1px solid #ddd;
     border-radius: 4px;
 }
-
-@media screen and (max-width: 560px) {
-
-    #plotBefore,
-    #plotAfter {
-        width: 100% !important;
-        height: calc(100vw - 54px) !important;
-        /* Fallback for older WebView */
-        aspect-ratio: auto !important;
-        max-height: 500px;
-    }
-
-    #canvasContainer3D {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .canvas-wrapper {
-        width: 100%;
-        padding: 5px;
-        /* Reduce padding on mobile */
-    }
-}

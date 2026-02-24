@@ -17,33 +17,17 @@ label {
     margin-right: 15px;
 }
 
-/* 4x4 matrix grid (Flexbox fallback) */
+/* 4x4 matrix grid */
 .matrix-grid-4 {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, 60px);
     gap: 8px;
     margin-top: 10px;
-    width: fit-content;
-    max-width: 100%;
 }
 
 .matrix-grid-4 input {
-    width: 60px !important;
-    flex: 0 0 60px !important;
+    width: 60px;
     text-align: right;
-}
-
-@media screen and (max-width: 600px) {
-    .matrix-grid-4 {
-        width: 100%;
-    }
-
-    .matrix-grid-4 input {
-        /* 4 items per row, 3 gaps of 8px (24px total) -> 6px subtracted from each 25% */
-        width: calc(25% - 6px) !important;
-        flex: 0 0 calc(25% - 6px) !important;
-        min-width: 0;
-    }
 }
 
 /* 変換リスト */
