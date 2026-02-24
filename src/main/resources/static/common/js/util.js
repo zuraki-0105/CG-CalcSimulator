@@ -81,3 +81,52 @@ export function formatTransformEntry(t, index) {
             return { text: `${num}: ${t.type}`, isHtml: false };
     }
 }
+
+/**
+ * 3D用のフロントエンド変換キューをサーバーの TransformCommand3D 形式に変換する
+ */
+export function toTransformCommands3D(queue) {
+    return queue.map(t => {
+        switch (t.type) {
+            case "translation":
+                return { type: "translation", tx: t.tx, ty: t.ty, tz: t.tz };
+            case "scale":
+                return { type: "scale", sx: t.sx, sy: t.sy, sz: t.sz };
+            case "rotationX":
+                return { type: "rotationX", thetaDeg: t.theta };
+            case "rotationY":
+                return { type: "rotationY", thetaDeg: t.theta };
+            case "rotationZ":
+                return { type: "rotationZ", thetaDeg: t.theta };
+            case "custom":
+                return { type: "custom", matrix: t.matrix };
+            default:
+                return t;
+        }
+    });
+}
+
+/**
+ * 3D用の変換キューの内容をテキストとして整形して返す
+ */
+export function formatTransformEntry3D(t, index) {
+    const num = index + 1;
+    switch (t.type) {
+        case "translation":
+            return { text: `${num}: 平行移動 (${t.tx}, ${t.ty}, ${t.tz})`, isHtml: false };
+        case "scale":
+            return { text: `${num}: 拡大縮小 (${t.sx}, ${t.sy}, ${t.sz})`, isHtml: false };
+        case "rotationX":
+            return { text: `${num}: X軸回転 (${t.theta}°)`, isHtml: false };
+        case "rotationY":
+            return { text: `${num}: Y軸回転 (${t.theta}°)`, isHtml: false };
+        case "rotationZ":
+            return { text: `${num}: Z軸回転 (${t.theta}°)`, isHtml: false };
+        case "custom": {
+            const matrixText = "{ " + t.matrix.map(row => row.join(", ")).join("\n  ") + " }";
+            return { text: `${num}: 任意行列(4x4)<br>${matrixText}<br>`, isHtml: true };
+        }
+        default:
+            return { text: `${num}: ${t.type}`, isHtml: false };
+    }
+}

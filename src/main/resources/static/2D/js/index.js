@@ -15,9 +15,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (dimension === "2D") {
             console.log("2Dが選択されました");
-            location.href = "/2d/html/shape.html";
+            location.href = "/2D/html/shape.html";
         } else {
-            // location.href = "/3d/html/shape.html";
+            console.log("3Dが選択されました");
+            location.href = "/3D/html/shape.html";
         }
     });
 });

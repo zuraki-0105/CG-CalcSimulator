@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>CG 投影変換シミュレーター (3D)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/common/css/common.css">
+    <link rel="stylesheet" href="/3D/css/confirm.css">
+</head>
+
+<body>
+    <h1>3D 入力内容確認</h1>
+
+    <section>
+        <h3>図形情報</h3>
+        <div id="shapeInfo"></div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>変換行列</h3>
+        <ul id="transformList"></ul>
+    </section>
+
+    <section>
+        <h3>合成変換行列M (4×4)</h3>
+        <div id="composedMatrix">計算中...</div>
+    </section>
+
+    <hr>
+
+    <section>
+        <h3>投影面の設定</h3>
+        <p>変換後に描画するための 投影面（Z値） を指定してください。<br>
+            ※指定されたZ座標によるX-Y平面への投影が行われます。</p>
+        <label>投影面 Z =
+            <input type="number" id="projectionZ" step="any" value="0">
+        </label>
+    </section>
+
+    <hr>
+
+    <div class="btn-group">
+        <button type="button" id="sendBtn" class="btn-primary">描画</button>
+        <button type="button" id="backBtn" class="btn-secondary">戻る</button>
+    </div>
+
+    <script src="/3D/js/confirm.js" type="module"></script>
+</body>
+
+</html>

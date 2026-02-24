@@ -1,0 +1,33 @@
+/* 3D confirm.css */
+
+#shapeInfo,
+#transformList,
+#composedMatrix {
+    white-space: pre;
+    font-family: 'Consolas', 'Courier New', monospace;
+    padding: 12px 16px;
+    line-height: 1.7;
+    font-size: 0.95rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: #f8fafc;
+    max-width: 550px;
+}
+
+#transformList {
+    padding-left: 3ch;
+    font-size: 0.875rem;
+}
+
+#composedMatrix {
+    font-size: 0.875rem;
+}
+
+section {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
