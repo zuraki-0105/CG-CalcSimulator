@@ -244,6 +244,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const origin = toCanvas({ x: 0, y: 0 }, view);
         ctx.textAlign = "right";
         ctx.fillText("O", origin.x - 6, origin.y + 16);
+
+        // X軸ラベル (右端)
+        ctx.textAlign = "left";
+        ctx.fillStyle = "#000000"; // 真っ黒に変更
+        ctx.font = "bold 14px monospace";
+        // 描画位置をさらに内側に寄せる (-28ピクセル), ちょっと上へ (-4ピクセル)
+        const xLabelPos = toCanvas({ x: view.maxX + step, y: 0 }, view);
+        ctx.fillText("x", xLabelPos.x - 28, xLabelPos.y - 4);
+
+        // Y軸ラベル (上端)
+        ctx.textAlign = "center";
+        // 描画位置を少し下側に寄せる (+16ピクセル)
+        const yLabelPos = toCanvas({ x: 0, y: view.maxY + step }, view);
+        ctx.fillText("y", yLabelPos.x + 12, yLabelPos.y + 16);
     }
 
     /**
