@@ -65,12 +65,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const transformed = data.transformed; // 3D points
 
         // --- 変換前: Plotly scatter3d でワイヤーフレーム表示 (左手系: Z軸反転) ---
-        const traceWire = buildCuboidTrace3D(original, "変換前", "#333333");
+        const tracesWireBefore = buildCuboidTrace3D(original, "変換前", "#333333");
 
         // 三次元座標軸を描画（原点を貫通する X赤, Y緑, Z青 の軸線）
         const axisTraces = buildAxisTraces3D(original);
 
-        plot3DChart("plotBefore", [traceWire, ...axisTraces]);
+        plot3DChart("plotBefore", [...tracesWireBefore, ...axisTraces]);
 
         // --- 変換後: 投影タイプに応じて切替 (2D) ---
         let projectedPts;
@@ -99,17 +99,17 @@ document.addEventListener("DOMContentLoaded", () => {
             projectedPts = transformed.map(p => ({ x: p.x, y: p.y }));
         }
 
-        const traceAfterWireframe = buildCuboidTrace2D(projectedPts, "変換後", "#d9534f", "solid");
-        plot2DChart("plotAfter", [traceAfterWireframe]);
+        const tracesAfterWireframe = buildCuboidTrace2D(projectedPts, "変換後", "#d9534f", "solid");
+        plot2DChart("plotAfter", [...tracesAfterWireframe]);
     }
 
     /**
-     * 直方体の8頂点から、3D scatter3d トレースを生成する
+     * 直方体の8頂点から、3D scatter3d トレース群(エッジごと)を生成する (WebG Lmobile対策でnull不使用)
      * 左手系: Z軸は反転して描画 (z_plot = -z)
      */
     function buildCuboidTrace3D(pts, name, color) {
         if (!pts || pts.length !== 8) {
-            return { x: [], y: [], z: [], type: "scatter3d", mode: "lines", name };
+            return [];
         }
 
         const edges = [
@@ -118,31 +118,30 @@ document.addEventListener("DOMContentLoaded", () => {
             [0, 4], [1, 5], [2, 6], [3, 7]   // 前後を繋ぐ
         ];
 
-        const xs = [], ys = [], zs = [];
-
+        const traces = [];
+        let first = true;
         for (const [i, j] of edges) {
-            // 左手系: z を反転して描画
-            xs.push(pts[i].x, pts[j].x, null);
-            ys.push(pts[i].y, pts[j].y, null);
-            zs.push(-pts[i].z, -pts[j].z, null);
+            traces.push({
+                type: "scatter3d",
+                mode: "lines",
+                name: name,
+                legendgroup: name,
+                showlegend: first,       // 最初の1辺のみ凡例を表示
+                x: [pts[i].x, pts[j].x],
+                y: [pts[i].y, pts[j].y],
+                z: [-pts[i].z, -pts[j].z],
+                line: { color: color, width: 4 }
+            });
+            first = false;
         }
-
-        return {
-            type: "scatter3d",
-            mode: "lines",
-            name: name,
-            x: xs,
-            y: ys,
-            z: zs,
-            line: { color: color, width: 4 }
-        };
+        return traces;
     }
 
     /**
-     * 直方体の8頂点から、2D scatter トレースを生成する (null区切り)
+     * 直方体の8頂点から、2D scatter トレース群(エッジごと)を生成する (mobile対策でnull不使用)
      */
     function buildCuboidTrace2D(pts, name, color, dash) {
-        if (!pts || pts.length !== 8) return { x: [], y: [], mode: "lines", name };
+        if (!pts || pts.length !== 8) return [];
 
         const edges = [
             [0, 1], [1, 2], [2, 3], [3, 0],
@@ -150,17 +149,22 @@ document.addEventListener("DOMContentLoaded", () => {
             [0, 4], [1, 5], [2, 6], [3, 7]
         ];
 
-        const xs = [], ys = [];
+        const traces = [];
+        let first = true;
         for (const [i, j] of edges) {
-            xs.push(pts[i].x, pts[j].x, null);
-            ys.push(pts[i].y, pts[j].y, null);
+            traces.push({
+                type: "scatter",
+                mode: "lines",
+                name: name,
+                legendgroup: name,
+                showlegend: first,
+                x: [pts[i].x, pts[j].x],
+                y: [pts[i].y, pts[j].y],
+                line: { color: color, width: 2, dash: dash }
+            });
+            first = false;
         }
-
-        return {
-            x: xs, y: ys,
-            mode: "lines", name: name,
-            line: { color: color, width: 2, dash: dash }
-        };
+        return traces;
     }
 
     function buildAxisTraces3D(pts) {
