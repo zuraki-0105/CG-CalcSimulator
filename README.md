@@ -1,117 +1,105 @@
-# CG 投影変換シミュレーター
+# CG_CalcSimulator (CG 投影変換シミュレーター)
 
-コンピュータグラフィックスにおける **2D / 3D の投影変換（平行移動・回転・拡大縮小）** をブラウザ上でシミュレーションできる Web アプリケーションです。
+## 1. プロジェクト概要
 
-> [!NOTE]
-> プログラムの詳細な仕様については今後追記予定です。
-
----
-
-## 技術スタック
-
-| 区分 | 技術 |
-|---|---|
-| **バックエンド** | Java 17 / Spring Boot 4.0 |
-| **ビルドツール** | Maven (Maven Wrapper 同梱) |
-| **行列演算** | EJML (Efficient Java Matrix Library) |
-| **フロントエンド** | HTML / CSS / JavaScript（静的ファイル配信） |
-| **GUI (デスクトップ)** | JavaFX 17 ※任意 |
+コンピュータグラフィックスにおける **2D / 3D の投影変換（平行移動・回転・拡大縮小）** を、ブラウザ上で直感的にシミュレーションするための Web アプリケーションです。
+行列の計算プロセスと図形の変形を視覚的に結びつけ、CG アニメーションやモデリングの基礎技術であるアフィン変換を学ぶための学習ツールとして構築されました。
 
 ---
 
-## プロジェクト構成
+## 2. 技術スタック (Tech Stack)
 
-```
-CG_CalcSimulator/
-├── pom.xml                          # Maven 設定ファイル
-├── mvnw / mvnw.cmd                  # Maven Wrapper
-│
-└── src/main/
-    ├── java/.../CG_CalcSimulation/
-    │   ├── CgCalcSimulationApplication.java   # Spring Boot エントリポイント
-    │   ├── CgCalcService.java                 # 変換計算サービス
-    │   ├── CgController.java                  # REST コントローラ
-    │   ├── CorsConfig.java                    # CORS 設定
-    │   ├── InputDataModel.java                # 入力データモデル
-    │   ├── TransformCommand.java              # 変換コマンド
-    │   ├── matrix3/                           # 行列演算ユーティリティ
-    │   ├── shape/                             # 図形定義 (Circle, Rectangle 等)
-    │   ├── gui/                               # JavaFX デスクトップ GUI
-    │   └── util/                              # バリデーション等
-    │
-    └── resources/
-        ├── application.properties             # Spring Boot 設定
-        └── static/                            # フロントエンド静的ファイル
-            ├── index.html                     # トップページ (次元選択)
-            ├── 2D/html/                       # 2D 用ページ群
-            ├── 2D/css/                        # 2D 用スタイルシート
-            ├── 2D/js/                         # 2D 用 JavaScript
-            └── common/js/                     # 共通ユーティリティ
-```
+| 区分 | 言語・フレームワーク | 概要・選定理由 |
+| --- | --- | --- |
+| **Backend** | Java 17, Spring Boot | 強固な型システムを持ち、複雑なロジックを整理しやすいため。API サーバーとして機能します。 |
+| **Frontend** | HTML, CSS, JavaScript | Vanilla JS で DOM と Canvas を直接操作し、外部依存を減らして軽量な動作を実現しています。 |
+| **行列表現・計算** | EJML | Java 向けの高速かつ柔軟な行列演算ライブラリ。同次座標の計算(3x3 / 4x4)を効率的に行うために採用しました。 |
+| **ビルド環境** | Maven | 依存関係とビルドの一元管理用です (Maven Wrapper 同梱)。 |
 
 ---
 
-## Web アプリの画面フロー
-
-```
-次元の選択 (2D / 3D)
-    ↓
-図形の選択 (三角形, 四角形, 円 など)
-    ↓
-変換行列パラメータの入力 (平行移動, 回転, 拡大縮小)
-    ↓
-変換結果の確認・描画
-```
-
----
-
-## ローカルでの実行方法
+## 3. 環境構築・実行方法 (Getting Started)
 
 ### 前提条件
+- JDK 17 以上 がインストールされていること。（例: Red Hat OpenJDK 17, Eclipse Temurin 17 など）
 
-- **Java 17 以上** がインストールされていること（`java -version` で確認できます）
-
-> [!IMPORTANT]
-> Java 8 では起動できません。Red Hat OpenJDK 17 以上、Eclipse Temurin 17 以上などをご利用ください。
-
-### 方法 1: VS Code の「実行とデバッグ」から起動する（推奨）
-
-1. VS Code でプロジェクトを開く
-2. 左サイドバーの **「実行とデバッグ」**（`Ctrl + Shift + D`）を開く
-3. 上部のドロップダウンから **`CgCalcSimulationApplication`** を選択
-4. **▶ ボタン** または `F5` キーで実行
-
-起動完了後、ブラウザが自動で開きます（`local` プロファイル設定時）。
-
-### 方法 2: コマンドラインから起動する
+### クローンと実行手順
 
 ```powershell
-# ブラウザ自動オープンあり（ローカル開発用）
+# 1. リポジトリをクローン
+git clone https://github.com/your-username/CG_CalcSimulator.git
+cd CG_CalcSimulator
+
+# 2. アプリケーションのビルドと起動（ローカル開発用: ブラウザが自動起動します）
 .\mvnw spring-boot:run "-Dspring-boot.run.profiles=local"
 
-# ブラウザ自動オープンなし（通常起動）
+# ※ブラウザ自動オープンなし（通常起動）の場合はこちら
 .\mvnw spring-boot:run
 ```
 
-### アクセス
-
 起動後、ブラウザで以下の URL にアクセスしてください。
-
-```
-http://localhost:8080/
-```
-
-### 停止方法
-
-- **VS Code**: 上部の赤い **⏹ 停止ボタン** をクリック
-- **ターミナル**: `Ctrl + C` を押し、「バッチ ジョブを終了しますか (Y/N)?」に `Y` と入力
+- `http://localhost:8080/`
 
 ---
 
-## デスクトップ GUI (JavaFX) での実行
+## 4. ディレクトリ構成
 
-JavaFX を使用したデスクトップ版も利用可能です。  
-VS Code の「実行とデバッグ」から **`MainApp`** を選択して実行してください。
+バックエンド (Java) と フロントエンド (Static HTML/JS) が一体となったモノリス構成です。
 
-> [!NOTE]
-> JavaFX SDK のパスが `launch.json` の `vmArgs` に設定されている必要があります。
+```text
+CG_CalcSimulator/
+├── pom.xml                          # Maven 設定ファイル
+├── mvnw / mvnw.cmd                  # Maven Wrapper
+└── src/main/
+    ├── java/.../CG_CalcSimulation/
+    │   ├── CgCalcSimulationApplication.java   # Spring Boot エントリポイント
+    │   ├── api/CgController.java              # REST API コントローラ
+    │   ├── matrix3/                           # 2D用行列計算モジュール (Point2D, Matrix3等)
+    │   ├── matrix4/                           # 3D用行列計算モジュール
+    │   ├── shape/                             # 2D図形定義 (Rectangle, Ellipse)
+    │   └── shape3D/                           # 3D図形定義 (Cuboid 等)
+    └── resources/
+        ├── application.properties             # Spring Boot 環境変数・設定ファイル
+        └── static/                            # フロントエンド (HTML/CSS/JS)
+            ├── index.html                     # トップページ（2D/3Dの分岐）
+            ├── 2D/                            # 2D シミュレータの静的リソース
+            └── 3D/                            # 3D シミュレータの静的リソース
+```
+
+---
+
+## 5. 主な機能 (Features)
+
+- **次元切り替え:** 2D または 3D ベースでの変換を選択可能。
+- **標準図形の描画:** 矩形、円、楕円 (2D)、および直方体 (3D) から描画対象を選択できます。
+- **複合変換シミュレーション:** 「x軸方向へ平行移動 → y軸を中心に回転 → 全体をスケール」といった複数の変換操作を組み合わせ、リアルタイムに軌跡と結果を確認できます。
+- **演算行列の可視化:** 入力されたパラメータを元に、内部で実際に掛け合わされた最終的な同次座標合成行列 (3x3 行列 / 4x4 行列) を UI 上で視覚的に確認できます。
+
+---
+
+## 6. 特記事項・Web アプリケーションの仕様
+
+### API 仕様 (Endpoints)
+
+フロントエンドとバックエンドの通信は JSON ベースの REST API を用いて行われます。
+
+- **2D 用 API:**
+  - `POST /api/2d/compose-matrix` : 複数の変換コマンド群から、合成された 3x3 行列を返却します。
+  - `POST /api/2d/draw` : 選択された図形データと変換コマンドを送信し、変換前と変換後の頂点座標（ポイントリスト）を取得します。
+- **3D 用 API:**
+  - `POST /api/3d/compose-matrix` : 3D 操作用。合成された 4x4 行列を返却します。
+  - `POST /api/3d/draw` : 3D 図形と変換を渡し、投影変換後の空間座標を取得します。
+
+### 環境変数関連
+
+現状、`.env` への依存はなく `src/main/resources/application.properties` にてサーバーポートやアプリケーション名の定義を行っています。（現在はDB連携は行っていません）
+
+### 座標変換・計算ロジックの概要
+
+当アプリの中心的な価値である「図形の変換描画」において、形状によって最適なアルゴリズムを使い分けています。
+
+1. **同次座標系による一元管理**
+   平行移動、回転、拡大縮小といったすべての変換操作は、2D では 3x3 行列、3Dでは 4x4 行列を用いた「同次座標（Homogeneous coordinates）」で計算されています。これにより、どんなに複雑な変換も行列の掛け算のみで表現可能です。
+2. **図形表現の工夫（代表点 vs パラメトリック・点群方式）**
+   - **矩形 / 直方体:** 頂点（代表点）だけを算出して行列変換し、フロントエンド側で頂点同士を線で結ぶ方式。
+   - **円 / 楕円等の曲線形状:** アフィン変換後の曲線を正しく描画するため、バックエンド側で図形の方程式（パラメトリック方程式）から外周を描く **64個の点群データ** を生成し、それらすべてに対して一括変換をかけてからブラウザに返しています。これにより、斜めに拡大縮小された"歪んだ楕円"でも、JavaScript 側の単純な点つなぎ処理だけで滑らかで正確に表現できます。

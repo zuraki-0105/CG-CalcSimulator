@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const layout = {
             xaxis: {
-                title: "x",
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
@@ -107,12 +106,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 scaleratio: 1
             },
             yaxis: {
-                title: "y",
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
                 gridcolor: "#e0e0e0"
             },
+            annotations: [
+                {   // X軸ラベル（y=0の直線上、右端）
+                    xref: "x domain", yref: "y",
+                    x: 1, y: 0,
+                    text: "<b>x</b>", font: { size: 16, color: "#000" },
+                    showarrow: false,
+                    xanchor: "left", yanchor: "middle",
+                    xshift: 10 // 少し外側にずらす
+                },
+                {   // Y軸ラベル（x=0の直線上、上端）
+                    xref: "x", yref: "y domain",
+                    x: 0, y: 1,
+                    text: "<b>y</b>", font: { size: 16, color: "#000" },
+                    showarrow: false,
+                    xanchor: "center", yanchor: "bottom",
+                    yshift: 10 // 少し外側にずらす
+                }
+            ],
             dragmode: "pan",        // デフォルトをパンに
             hovermode: "closest",
             showlegend: true,

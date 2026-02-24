@@ -11,13 +11,38 @@ document.addEventListener("DOMContentLoaded", () => {
         history.back();
     });
 
+    // 透視投影オプションの表示切替
+    document.querySelectorAll('input[name="projectionType"]').forEach(radio => {
+        radio.addEventListener("change", () => {
+            const isPerspective = document.querySelector('input[name="projectionType"]:checked').value === "perspective";
+            document.getElementById("perspectiveOptions").style.display = isPerspective ? "block" : "none";
+        });
+    });
+
     document.getElementById("sendBtn").addEventListener("click", () => {
         const projZ = document.getElementById("projectionZ").valueAsNumber;
         if (Number.isNaN(projZ)) {
             alert("投影面のZ値を入力してください");
             return;
         }
+        if (projZ <= 0) {
+            alert("投影面のZ値は 0 より大きい値（Z > 0）を指定してください。");
+            return;
+        }
+
+        const projType = document.querySelector('input[name="projectionType"]:checked').value;
         sessionStorage.setItem("projectionZ", projZ);
+        sessionStorage.setItem("projectionType", projType);
+
+        if (projType === "perspective") {
+            const d = document.getElementById("perspectiveD").valueAsNumber;
+            if (Number.isNaN(d) || d <= 0) {
+                alert("視点距離 d は 0 より大きい値を入力してください");
+                return;
+            }
+            sessionStorage.setItem("perspectiveD", d);
+        }
+
         location.href = "/3D/html/draw.html";
     });
 

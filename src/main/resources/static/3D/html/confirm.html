@@ -32,12 +32,24 @@
     <hr>
 
     <section>
-        <h3>投影面の設定</h3>
-        <p>変換後に描画するための 投影面（Z値） を指定してください。<br>
-            ※指定されたZ座標によるX-Y平面への投影が行われます。</p>
+        <h3>投影の設定</h3>
+
+        <div class="radio-group">
+            <label><input type="radio" name="projectionType" value="parallel" checked>平行投影</label>
+            <label><input type="radio" name="projectionType" value="perspective">透視投影</label>
+        </div>
+
         <label>投影面 Z =
-            <input type="number" id="projectionZ" step="any" value="0">
+            <input type="number" id="projectionZ" step="any" value="1">
         </label>
+
+        <div id="perspectiveOptions" style="display:none; margin-top: 10px;">
+            <p>※ 視点から投影面までの距離 d を指定してください（d &gt; 0）。<br>
+                値が小さいほどパースが強くなります。</p>
+            <label>視点距離 d =
+                <input type="number" id="perspectiveD" step="any" value="5" min="0.01">
+            </label>
+        </div>
     </section>
 
     <hr>
