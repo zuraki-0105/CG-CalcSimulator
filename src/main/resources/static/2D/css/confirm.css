@@ -38,3 +38,13 @@
   background: #f8fafc;
   max-width: 480px;
 }
+
+@media screen and (max-width: 768px) {
+
+  #shapeInfo,
+  #transformList,
+  #composedMatrix {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+}

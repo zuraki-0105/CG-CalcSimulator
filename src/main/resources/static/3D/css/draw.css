@@ -17,6 +17,7 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    max-width: 100%;
 }
 
 .canvas-wrapper h3 {
@@ -28,6 +29,24 @@
 /* Plotly div */
 #plotBefore,
 #plotAfter {
+    width: 100%;
+    max-width: 500px;
+    aspect-ratio: 1;
     border: 1px solid #ddd;
     border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+    #canvasContainer3D {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .canvas-wrapper {
+        width: 100%;
+    }
+
+    .canvas-wrapper h3 {
+        font-size: 0.95rem;
+    }
 }
