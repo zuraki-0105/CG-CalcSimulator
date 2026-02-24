@@ -1,4 +1,4 @@
-import { toTransformCommands3D, formatTransformEntry3D } from "/common/js/util.js";
+import { toTransformCommands3D, formatTransformEntry3D } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/3D/js/confirm.js が読み込まれました");
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.setItem("perspectiveD", d);
         }
 
-        location.href = "/3D/html/draw.html";
+        location.href = "./draw.html";
     });
 
     function renderShapeInfo() {

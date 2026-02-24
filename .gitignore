@@ -35,3 +35,4 @@ build/
 ### Log files ###
 *.log
 compile_log.txt
+deploy.ps1

@@ -1,4 +1,4 @@
-import { clearInputs, setInputs, formatTransformEntry3D } from "/common/js/util.js";
+import { clearInputs, setInputs, formatTransformEntry3D } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const transformSelect = document.getElementById("transformType");
@@ -152,14 +152,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nextBtn.addEventListener("click", () => {
-        location.href = "/3D/html/confirm.html";
+        location.href = "./confirm.html";
     });
 
     backBtn.addEventListener("click", () => {
         if (history.length > 1) {
             history.back();
         } else {
-            location.href = "/3D/html/shape.html";
+            location.href = "./shape.html";
         }
     });
 

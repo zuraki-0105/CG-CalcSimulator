@@ -1,4 +1,4 @@
-import { clearInputs, setInputs } from "/common/js/util.js";
+import { clearInputs, setInputs } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const shapeSelect = document.getElementById("shapeType");
@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setInputs(cuboidParams, [0, 0, 0, 1, 1, 1]);
         }
 
-        location.href = "/3D/html/trans-matrix.html";
+        location.href = "./trans-matrix.html";
     });
 
     backBtn.addEventListener("click", () => {

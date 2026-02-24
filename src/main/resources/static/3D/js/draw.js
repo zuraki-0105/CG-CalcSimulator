@@ -1,4 +1,4 @@
-import { toTransformCommands3D } from "/common/js/util.js";
+import { toTransformCommands3D } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/3D/js/draw.js が読み込まれました (Plotly版)");
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("resetBtn").addEventListener("click", () => {
         sessionStorage.clear();
-        window.location.href = "/";
+        window.location.href = "../../index.html";
     });
 
     fetchDrawData();

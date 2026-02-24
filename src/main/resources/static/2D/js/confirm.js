@@ -1,4 +1,4 @@
-import { toTransformCommands, formatTransformEntry } from "/common/js/util.js";
+import { toTransformCommands, formatTransformEntry } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/confirm.js が読み込まれました");
@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("sendBtn").addEventListener("click", () => {
-        location.href = "/2d/html/draw.html";
+        location.href = "./draw.html";
     });
 
     function renderShapeInfo() {

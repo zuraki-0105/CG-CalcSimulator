@@ -1,4 +1,4 @@
-import { clearInputs, setInputs, formatTransformEntry } from "/common/js/util.js";
+import { clearInputs, setInputs, formatTransformEntry } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/trans-matrix.js が読み込まれました");
@@ -136,14 +136,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nextBtn.addEventListener("click", () => {
-        location.href = "/2d/html/confirm.html";
+        location.href = "./confirm.html";
     });
 
     backBtn.addEventListener("click", () => {
         if (history.length > 1) {
             history.back();
         } else {
-            location.href = "/2d/html/shape.html";
+            location.href = "./shape.html";
         }
     });
 

@@ -1,4 +1,4 @@
-import { clearInputs, setInputs } from "/common/js/util.js";
+import { clearInputs, setInputs } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/shape.jsが読み込まれました");
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setInputs(ellipseParams, [0, 0, 1, 1]);
         }
 
-        location.href = "/2d/html/trans-matrix.html";
+        location.href = "./trans-matrix.html";
     });
 
     backBtn.addEventListener("click", () => {
