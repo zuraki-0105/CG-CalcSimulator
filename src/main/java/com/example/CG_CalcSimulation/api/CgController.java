@@ -16,14 +16,18 @@ import com.example.CG_CalcSimulation.matrix3.Point2D;
 import com.example.CG_CalcSimulation.matrix3.Transform;
 import com.example.CG_CalcSimulation.shape.Rectangle;
 
+import com.example.CG_CalcSimulation.matrix4.Matrix4;
+import com.example.CG_CalcSimulation.matrix4.Matrix4Util;
+import com.example.CG_CalcSimulation.matrix4.Point3D;
+import com.example.CG_CalcSimulation.matrix4.Transform3D;
+import com.example.CG_CalcSimulation.shape3D.Cuboid;
+
 @RestController
-@RequestMapping("/api/2d")
+@RequestMapping("/api")
 public class CgController {
 
-    /**
-     * 変換コマンドのリストを受け取り、合成変換行列を返す
-     */
-    @PostMapping("/compose-matrix")
+    // ===== 2D API ===== //
+    @PostMapping("/2d/compose-matrix")
     public Map<String, double[][]> composeMatrix(@RequestBody List<TransformCommand> commands) {
         Matrix3[] matrices = new Matrix3[commands.size()];
         for (int i = 0; i < commands.size(); i++) {
@@ -39,7 +43,7 @@ public class CgController {
      * - 矩形: 4頂点（代表点方式）
      * - 楕円/円: 64点（点群方式）
      */
-    @PostMapping("/draw")
+    @PostMapping("/2d/draw")
     public DrawResponse draw(@RequestBody DrawRequest req) {
 
         // 合成変換行列を計算
@@ -114,6 +118,70 @@ public class CgController {
                 return Transform.custom(cmd.getMatrix());
             default:
                 throw new IllegalArgumentException("Unknown transform type: " + cmd.getType());
+        }
+    }
+
+    // ===== 3D API ===== //
+
+    @PostMapping("/3d/compose-matrix")
+    public Map<String, double[][]> composeMatrix3D(@RequestBody List<TransformCommand3D> commands) {
+        Matrix4[] matrices = new Matrix4[commands.size()];
+        for (int i = 0; i < commands.size(); i++) {
+            matrices[i] = toMatrix4(commands.get(i));
+        }
+        Matrix4 composed = Matrix4Util.makeTransMatrix(matrices);
+        return Collections.singletonMap("matrix", composed.toArray());
+    }
+
+    @PostMapping("/3d/draw")
+    public DrawResponse3D draw3D(@RequestBody DrawRequest3D req) {
+        Matrix4 M = Matrix4Util.identity();
+        if (req.getTransforms() != null && !req.getTransforms().isEmpty()) {
+            Matrix4[] matrices = new Matrix4[req.getTransforms().size()];
+            for (int i = 0; i < req.getTransforms().size(); i++) {
+                matrices[i] = toMatrix4(req.getTransforms().get(i));
+            }
+            M = Matrix4Util.makeTransMatrix(matrices);
+        }
+
+        List<Point3D> original;
+        List<Point3D> transformed;
+
+        switch (req.getShapeType()) {
+            case "cuboid": {
+                Point3D base = new Point3D(req.getX(), req.getY(), req.getZ());
+                Cuboid cuboid = new Cuboid(req.getWidth(), req.getHeight(), req.getDepth(), base);
+                original = cuboid.getVertexes();
+
+                transformed = new ArrayList<>();
+                for (Point3D p : original) {
+                    transformed.add(M.apply(p));
+                }
+                break;
+            }
+            default:
+                throw new IllegalArgumentException("Unknown shape type 3D: " + req.getShapeType());
+        }
+
+        return new DrawResponse3D(req.getShapeType(), original, transformed, req.getProjectionZ());
+    }
+
+    private Matrix4 toMatrix4(TransformCommand3D cmd) {
+        switch (cmd.getType()) {
+            case "translation":
+                return Transform3D.translation(cmd.getTx(), cmd.getTy(), cmd.getTz());
+            case "scale":
+                return Transform3D.scale(cmd.getSx(), cmd.getSy(), cmd.getSz());
+            case "rotationX":
+                return Transform3D.rotationX(cmd.getThetaDeg());
+            case "rotationY":
+                return Transform3D.rotationY(cmd.getThetaDeg());
+            case "rotationZ":
+                return Transform3D.rotationZ(cmd.getThetaDeg());
+            case "custom":
+                return Transform3D.custom(cmd.getMatrix());
+            default:
+                throw new IllegalArgumentException("Unknown transform type 3D: " + cmd.getType());
         }
     }
 }
