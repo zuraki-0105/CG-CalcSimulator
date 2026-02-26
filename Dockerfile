@@ -18,8 +18,11 @@ RUN ./mvnw install -DskipTests
 FROM eclipse-temurin:17-jre-alpine
 VOLUME /tmp
 
+# ポート8080を使用することを明示（Cloud Runやローカルでの標準ポート）
+EXPOSE 8080
+
 # ビルド用イメージから作成された jar ファイルをコピー
 COPY --from=build /workspace/app/target/*.jar app.jar
 
-# エントリーポイントの指定 (jar の実行)
-ENTRYPOINT ["java","-jar","/app.jar"]
+# アプリケーションが「ポートを勝手に変えずに、指定されたポート（8080）で起動し続ける」ようにする
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -jar /app.jar"]
