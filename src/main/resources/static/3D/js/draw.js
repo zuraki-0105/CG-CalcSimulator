@@ -36,6 +36,13 @@ document.addEventListener("DOMContentLoaded", () => {
             req.width = Number(sessionStorage.getItem("width"));
             req.height = Number(sessionStorage.getItem("height"));
             req.depth = Number(sessionStorage.getItem("depth"));
+        } else if (shapeType === "sphere") {
+            req.x = Number(sessionStorage.getItem("cx"));
+            req.y = Number(sessionStorage.getItem("cy"));
+            req.z = Number(sessionStorage.getItem("cz"));
+            req.rx = Number(sessionStorage.getItem("rx"));
+            req.ry = Number(sessionStorage.getItem("ry"));
+            req.rz = Number(sessionStorage.getItem("rz"));
         }
 
         req.transforms = toTransformCommands3D(queue);
@@ -65,7 +72,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const transformed = data.transformed; // 3D points
 
         // --- 変換前: Plotly scatter3d でワイヤーフレーム表示 (左手系: Z軸反転) ---
-        const traceWire = buildCuboidTrace3D(original, "変換前", "#333333");
+        const shapeType = sessionStorage.getItem("shapeType");
+        let traceWire;
+        if (shapeType === "sphere") {
+            traceWire = buildSphereTrace3D(original, "変換前", "#333333");
+        } else {
+            traceWire = buildCuboidTrace3D(original, "変換前", "#333333");
+        }
 
         // 三次元座標軸を描画（原点を貫通する X赤, Y緑, Z青 の軸線）
         const axisTraces = buildAxisTraces3D(original);
@@ -99,7 +112,12 @@ document.addEventListener("DOMContentLoaded", () => {
             projectedPts = transformed.map(p => ({ x: p.x, y: p.y }));
         }
 
-        const traceAfterWireframe = buildCuboidTrace2D(projectedPts, "変換後", "#d9534f", "solid");
+        let traceAfterWireframe;
+        if (sessionStorage.getItem("shapeType") === "sphere") {
+            traceAfterWireframe = buildSphereTrace2D(projectedPts, "変換後", "#d9534f", "solid");
+        } else {
+            traceAfterWireframe = buildCuboidTrace2D(projectedPts, "変換後", "#d9534f", "solid");
+        }
         plot2DChart("plotAfter", [traceAfterWireframe]);
     }
 
@@ -298,5 +316,94 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         Plotly.newPlot(divId, traces, layout, config);
+    }
+
+    /**
+     * 球体の頂点群から、3D scatter3d トレースを生成する
+     * 経線・緯線を結ぶワイヤーフレームを作成する
+     */
+    function buildSphereTrace3D(pts, name, color) {
+        if (!pts || pts.length === 0) {
+            return { x: [], y: [], z: [], type: "scatter3d", mode: "lines", name };
+        }
+
+        const xs = [], ys = [], zs = [];
+        const latitudes = 12; // javaの実装と一致させる
+        const longitudes = 24;
+
+        // 緯線を描画（各緯度について経度方向に1周）
+        for (let i = 0; i <= latitudes; i++) {
+            for (let j = 0; j <= longitudes; j++) {
+                const idx = i * (longitudes + 1) + j;
+                const p = pts[idx];
+                xs.push(p.x);
+                ys.push(p.y);
+                zs.push(-p.z); // 左手系
+            }
+            // 線の区切り
+            xs.push(null); ys.push(null); zs.push(null);
+        }
+
+        // 経線を描画（各経度について緯度方向を結ぶ）
+        for (let j = 0; j <= longitudes; j++) {
+            for (let i = 0; i <= latitudes; i++) {
+                const idx = i * (longitudes + 1) + j;
+                const p = pts[idx];
+                xs.push(p.x);
+                ys.push(p.y);
+                zs.push(-p.z);
+            }
+            // 線の区切り
+            xs.push(null); ys.push(null); zs.push(null);
+        }
+
+        return {
+            type: "scatter3d",
+            mode: "lines",
+            name: name,
+            x: xs,
+            y: ys,
+            z: zs,
+            line: { color: color, width: 2 }
+        };
+    }
+
+    /**
+     * 球体の頂点群から、2D scatter トレースを生成する
+     */
+    function buildSphereTrace2D(pts, name, color, dash) {
+        if (!pts || pts.length === 0) return { x: [], y: [], mode: "lines", name };
+
+        const xs = [], ys = [];
+        const latitudes = 12;
+        const longitudes = 24;
+
+        // 緯線
+        for (let i = 0; i <= latitudes; i++) {
+            for (let j = 0; j <= longitudes; j++) {
+                const idx = i * (longitudes + 1) + j;
+                const p = pts[idx];
+                xs.push(p.x);
+                ys.push(p.y);
+            }
+            xs.push(null); ys.push(null);
+        }
+
+        // 経線
+        for (let j = 0; j <= longitudes; j++) {
+            for (let i = 0; i <= latitudes; i++) {
+                const idx = i * (longitudes + 1) + j;
+                const p = pts[idx];
+                xs.push(p.x);
+                ys.push(p.y);
+            }
+            xs.push(null); ys.push(null);
+        }
+
+        return {
+            x: xs, y: ys,
+            mode: "lines", name: name,
+            line: { color: color, width: 1.5, dash: dash }
+        };
     }
 });

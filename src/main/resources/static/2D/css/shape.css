@@ -18,6 +18,12 @@
 
 #rectParams label span,
 #ellipseParams label span {
-    display: inline-block;
+    display: inline-flex;
+    justify-content: space-between;
     width: 160px;
+}
+
+#rectParams label span::after,
+#ellipseParams label span::after {
+    content: "：";
 }

@@ -24,9 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (shapeType === "rectangle") {
             html = `Rectangle
-  基準点(x, y) =  (${sessionStorage.getItem("x")}, ${sessionStorage.getItem("y")})
-  幅           =  ${sessionStorage.getItem("width")}
-  高さ         =  ${sessionStorage.getItem("height")}`;
+  基準点(x, y) = (${sessionStorage.getItem("x")}, ${sessionStorage.getItem("y")})
+  幅           = ${sessionStorage.getItem("width")}
+  高さ         = ${sessionStorage.getItem("height")}`;
         }
 
         if (shapeType === "ellipse") {
@@ -36,9 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
             const b = Number(sessionStorage.getItem("b"));
 
             if (a === b) {
-                html = `Circle<br>  中点(x, y)  =  (${x}, ${y}),<br>  半径 r         =  ${a}`;
+                html = `Circle
+  中点(x, y) = (${x}, ${y})
+  半径 r     = ${a}`;
             } else {
-                html = `Ellipse<br>  中点(x, y)  =  (${x}, ${y}),<br>  長半径 a    =  ${a},<br>  短半径 b    =  ${b}`;
+                html = `Ellipse
+  中点(x, y) = (${x}, ${y})
+  長半径 a   = ${a}
+  短半径 b   = ${b}`;
             }
 
         }

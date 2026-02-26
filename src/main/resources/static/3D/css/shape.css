@@ -1,6 +1,7 @@
 /* 3D shape.html 固有スタイル */
 
-#cuboidParams {
+#cuboidParams,
+#sphereParams {
     background: #f8fafc;
     border: 1px solid var(--color-border);
     border-radius: var(--radius-sm);
@@ -8,11 +9,19 @@
     margin-top: 8px;
 }
 
-#cuboidParams label {
+#cuboidParams label,
+#sphereParams label {
     margin-bottom: 10px;
 }
 
-#cuboidParams label span {
-    display: inline-block;
+#cuboidParams label span,
+#sphereParams label span {
+    display: inline-flex;
+    justify-content: space-between;
     width: 160px;
+}
+
+#cuboidParams label span::after,
+#sphereParams label span::after {
+    content: "：";
 }

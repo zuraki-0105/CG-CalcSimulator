@@ -54,7 +54,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (shapeType === "cuboid") {
             html = `Cuboid
   基準点(x, y, z) = (${sessionStorage.getItem("x")}, ${sessionStorage.getItem("y")}, ${sessionStorage.getItem("z")})
-  幅(W), 高さ(H), 奥行き(D) = ${sessionStorage.getItem("width")}, ${sessionStorage.getItem("height")}, ${sessionStorage.getItem("depth")}`;
+  幅    (X方向)   = ${sessionStorage.getItem("width")}
+  高さ  (Y方向)   = ${sessionStorage.getItem("height")}
+  奥行き(Z方向)   = ${sessionStorage.getItem("depth")}`;
+        } else if (shapeType === "sphere") {
+            html = `Sphere
+  中心点(Cx, Cy, Cz) = (${sessionStorage.getItem("cx")}, ${sessionStorage.getItem("cy")}, ${sessionStorage.getItem("cz")})
+  半径rx (X方向)     = ${sessionStorage.getItem("rx")}
+  半径ry (Y方向)     = ${sessionStorage.getItem("ry")}
+  半径rz (Z方向)     = ${sessionStorage.getItem("rz")}`;
         }
 
         div.innerHTML = html;

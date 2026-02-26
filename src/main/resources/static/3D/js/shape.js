@@ -3,6 +3,7 @@ import { clearInputs, setInputs } from "../../common/js/util.js";
 document.addEventListener("DOMContentLoaded", () => {
     const shapeSelect = document.getElementById("shapeType");
     const cuboidParams = document.getElementById("cuboidParams");
+    const sphereParams = document.getElementById("sphereParams");
     const nextBtn = document.getElementById("nextBtn");
     const backBtn = document.getElementById("backBtn");
 
@@ -10,9 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
     shapeSelect.addEventListener("change", () => {
         const shape = shapeSelect.value;
         cuboidParams.classList.add("hidden");
+        sphereParams.classList.add("hidden");
 
         if (shape === "cuboid") {
             cuboidParams.classList.remove("hidden");
+        } else if (shape === "sphere") {
+            sphereParams.classList.remove("hidden");
         }
     });
 
@@ -51,6 +55,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
             clearInputs(cuboidParams);
             setInputs(cuboidParams, [0, 0, 0, 1, 1, 1]);
+        } else if (shape === "sphere") {
+            const cx = document.getElementById("sphereCx").value;
+            const cy = document.getElementById("sphereCy").value;
+            const cz = document.getElementById("sphereCz").value;
+            const rx = document.getElementById("sphereRx").value;
+            const ry = document.getElementById("sphereRy").value;
+            const rz = document.getElementById("sphereRz").value;
+
+            if (!cx || !cy || !cz || !rx || !ry || !rz) {
+                alert("Input all values");
+                return;
+            }
+            if (rx <= 0 || ry <= 0 || rz <= 0) {
+                alert("Must rx, ry, rz > 0");
+                return;
+            }
+
+            sessionStorage.setItem("cx", Number(cx));
+            sessionStorage.setItem("cy", Number(cy));
+            sessionStorage.setItem("cz", Number(cz));
+            sessionStorage.setItem("rx", Number(rx));
+            sessionStorage.setItem("ry", Number(ry));
+            sessionStorage.setItem("rz", Number(rz));
+
+            clearInputs(sphereParams);
+            setInputs(sphereParams, [0, 0, 0, 1, 1, 1]);
         }
 
         location.href = "./trans-matrix.html";

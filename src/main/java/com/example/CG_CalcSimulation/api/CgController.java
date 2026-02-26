@@ -21,6 +21,7 @@ import com.example.CG_CalcSimulation.matrix4.Matrix4Util;
 import com.example.CG_CalcSimulation.matrix4.Point3D;
 import com.example.CG_CalcSimulation.matrix4.Transform3D;
 import com.example.CG_CalcSimulation.shape3D.Cuboid;
+import com.example.CG_CalcSimulation.shape3D.Sphere;
 
 @RestController
 @RequestMapping("/api")
@@ -152,6 +153,17 @@ public class CgController {
                 Point3D base = new Point3D(req.getX(), req.getY(), req.getZ());
                 Cuboid cuboid = new Cuboid(req.getWidth(), req.getHeight(), req.getDepth(), base);
                 original = cuboid.getVertexes();
+
+                transformed = new ArrayList<>();
+                for (Point3D p : original) {
+                    transformed.add(M.apply(p));
+                }
+                break;
+            }
+            case "sphere": {
+                Point3D base = new Point3D(req.getX(), req.getY(), req.getZ());
+                Sphere sphere = new Sphere(req.getRx(), req.getRy(), req.getRz(), base);
+                original = sphere.getVertexes();
 
                 transformed = new ArrayList<>();
                 for (Point3D p : original) {

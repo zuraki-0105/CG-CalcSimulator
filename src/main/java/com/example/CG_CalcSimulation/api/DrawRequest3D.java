@@ -14,6 +14,11 @@ public class DrawRequest3D {
     private Double height;
     private Double depth;
 
+    // Sphere params
+    private Double rx;
+    private Double ry;
+    private Double rz;
+
     // Projection target Z
     private Double projectionZ;
 
@@ -74,6 +79,30 @@ public class DrawRequest3D {
 
     public void setDepth(Double depth) {
         this.depth = depth;
+    }
+
+    public Double getRx() {
+        return rx;
+    }
+
+    public void setRx(Double rx) {
+        this.rx = rx;
+    }
+
+    public Double getRy() {
+        return ry;
+    }
+
+    public void setRy(Double ry) {
+        this.ry = ry;
+    }
+
+    public Double getRz() {
+        return rz;
+    }
+
+    public void setRz(Double rz) {
+        this.rz = rz;
     }
 
     public Double getProjectionZ() {
