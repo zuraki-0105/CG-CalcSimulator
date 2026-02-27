@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../../common/css/common.css?v=@build.timestamp@">
   <link rel="stylesheet" href="../css/shape.css?v=@build.timestamp@">
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
   <link rel="icon" href="data:,">
 </head>
 
@@ -14,51 +15,60 @@
   <h1>2D 図形選択</h1>
   <p>図形を選択してください。</p>
 
-  <select id="shapeType">
-    <option value="">--- 選択してください ---</option>
-    <option value="rectangle">四角形</option>
-    <option value="ellipse">円/楕円</option>
-  </select>
+  <div class="shape-container">
+    <div class="input-column">
+      <select id="shapeType">
+        <option value="">--- 選択してください ---</option>
+        <option value="rectangle">四角形</option>
+        <option value="ellipse">円/楕円</option>
+      </select>
 
-  <hr>
+      <hr>
 
-  <div id="rectParams" class="hidden">
-    <h3>四角形のパラメータ</h3>
-    <label><span>基準点(左下) X</span>
-      <input type="number" id="rectX" step="any" value="0">
-    </label>
-    <label><span>基準点(左下) Y</span>
-      <input type="number" id="rectY" step="any" value="0">
-    </label>
-    <label><span>幅</span>
-      <input type="number" id="rectWidth" step="any" value="1">
-    </label>
-    <label><span>高さ</span>
-      <input type="number" id="rectHeight" step="any" value="1">
-    </label>
-  </div>
+      <div id="rectParams" class="hidden">
+        <h3>四角形のパラメータ</h3>
+        <label><span>基準点(左下) X</span>
+          <input type="number" id="rectX" step="any" value="0">
+        </label>
+        <label><span>基準点(左下) Y</span>
+          <input type="number" id="rectY" step="any" value="0">
+        </label>
+        <label><span>幅</span>
+          <input type="number" id="rectWidth" step="any" value="1">
+        </label>
+        <label><span>高さ</span>
+          <input type="number" id="rectHeight" step="any" value="1">
+        </label>
+      </div>
 
-  <div id="ellipseParams" class="hidden">
-    <h3>円 / 楕円</h3>
-    <label><span>中心 X</span>
-      <input type="number" id="ellipseX" step="any" value="0">
-    </label>
-    <label><span>中心 Y</span>
-      <input type="number" id="ellipseY" step="any" value="0">
-    </label>
-    <label><span>横半径 a</span>
-      <input type="number" id="ellipseA" step="any" value="1">
-    </label>
-    <label><span>縦半径 b</span>
-      <input type="number" id="ellipseB" step="any" value="1">
-    </label>
-  </div>
+      <div id="ellipseParams" class="hidden">
+        <h3>円 / 楕円</h3>
+        <label><span>中心 X</span>
+          <input type="number" id="ellipseX" step="any" value="0">
+        </label>
+        <label><span>中心 Y</span>
+          <input type="number" id="ellipseY" step="any" value="0">
+        </label>
+        <label><span>横半径 a</span>
+          <input type="number" id="ellipseA" step="any" value="1">
+        </label>
+        <label><span>縦半径 b</span>
+          <input type="number" id="ellipseB" step="any" value="1">
+        </label>
+      </div>
 
-  <hr>
-  <div class="btn-group">
-    <button type="button" id="nextBtn" class="btn-primary">次へ</button>
-    <button type="button" id="backBtn" class="btn-secondary">戻る</button>
-  </div>
+      <hr>
+      <div class="btn-group">
+        <button type="button" id="nextBtn" class="btn-primary">次へ</button>
+        <button type="button" id="backBtn" class="btn-secondary">戻る</button>
+      </div>
+    </div><!-- /.input-column -->
+
+    <div class="preview-column">
+      <h3>プレビュー</h3>
+      <div id="previewArea" style="width: 400px; height: 400px;"></div>
+    </div><!-- /.preview-column -->
+  </div><!-- /.shape-container -->
 
   <script src="../../common/js/util.js?v=@build.timestamp@" type="module"></script>
   <script src="../js/shape.js?v=@build.timestamp@" type="module"></script>

@@ -129,13 +129,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 projectedPts = transformed.map(p => {
                     // 視点から対象の頂点までのZ方向の距離
                     const dz = p.z - camZ;
-
                     // 視点から投影面までのZ方向の距離
                     const d = projZ - camZ;
 
-                    // 対象が視点と同じZ座標にある（dz == 0）場合は特異点として扱う
-                    if (Math.abs(dz) < 1e-9) {
-                        return { x: p.x * 1e6, y: p.y * 1e6 }; // 画面外へ飛ばす
+                    // 1. 対象が視点と全く同じZ座標にある（dz == 0）場合は投影不能
+                    // 2. dz と d の符号が異なる場合（対象がカメラの背後にあり、投影面とは逆方向）も描画対象外とする
+                    // （※ d/dz < 0 だと図形が上下左右反転して巨大化するため）
+                    if (Math.abs(dz) < 1e-9 || (dz * d < 0)) {
+                        return { x: null, y: null }; // Plotly上で線を描画させない（スキップ）
                     }
 
                     // 相似比 scale = 投影面までの距離 / 対象頂点までの距離
@@ -222,12 +223,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function buildAxisTraces3D(pts) {
-        let maxAbs = 1;
-        for (const p of pts) {
-            maxAbs = Math.max(maxAbs, Math.abs(p.x), Math.abs(p.y), Math.abs(p.z));
+        let maxX = 1, maxY = 1, maxZ = 1;
+        if (pts && pts.length > 0) {
+            maxX = Math.max(...pts.map(p => Math.abs(p.x)));
+            maxY = Math.max(...pts.map(p => Math.abs(p.y)));
+            maxZ = Math.max(...pts.map(p => Math.abs(p.z)));
         }
-        const posLen = Math.ceil(maxAbs * 1.5);   // +方向の長さ
-        const negLen = Math.ceil(maxAbs * 0.5);   // -方向（短め）
+        if (maxX === 0) maxX = 1;
+        if (maxY === 0) maxY = 1;
+        if (maxZ === 0) maxZ = 1;
+
+        const posX = Math.ceil(maxX * 1.3) || 2;
+        const negX = Math.ceil(maxX * 0.5) || 1;
+        const posY = Math.ceil(maxY * 1.3) || 2;
+        const negY = Math.ceil(maxY * 0.5) || 1;
+        const posZ = Math.ceil(maxZ * 1.3) || 2;
+        const negZ = Math.ceil(maxZ * 0.5) || 1;
 
         // 軸の線分トレース（凡例に表示）
         const makeLine = (name, color, x, y, z) => ({
@@ -238,12 +249,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // 矢印（cone）トレース: 正方向先端にラベル付き
-        const makeArrow = (name, color, px, py, pz, ux, uy, uz) => ({
+        const makeArrow = (name, color, px, py, pz, ux, uy, uz, refLen) => ({
             type: "cone",
             showlegend: false, hoverinfo: "text", hovertext: name,
             x: [px], y: [py], z: [pz],
             u: [ux], v: [uy], w: [uz],
-            sizemode: "absolute", sizeref: posLen * 0.08,
+            sizemode: "absolute", sizeref: refLen * 0.08,
             anchor: "tail",
             colorscale: [[0, color], [1, color]],
             showscale: false
@@ -261,17 +272,17 @@ document.addEventListener("DOMContentLoaded", () => {
         // 左手系なので Z の描画座標は反転 (-z)
         return [
             // X軸
-            makeLine("x軸", "#d00000", [-negLen, posLen], [0, 0], [0, 0]),
-            makeArrow("X", "#d00000", posLen, 0, 0, 1, 0, 0),
-            makeLabel("X", "#d00000", posLen * 1.12, 0, 0),
+            makeLine("x軸", "#d00000", [-negX, posX], [0, 0], [0, 0]),
+            makeArrow("X", "#d00000", posX, 0, 0, 1, 0, 0, posX),
+            makeLabel("X", "#d00000", posX * 1.12, 0, 0),
             // Y軸
-            makeLine("y軸", "#00a000", [0, 0], [-negLen, posLen], [0, 0]),
-            makeArrow("Y", "#00a000", 0, posLen, 0, 0, 1, 0),
-            makeLabel("Y", "#00a000", 0, posLen * 1.12, 0),
+            makeLine("y軸", "#00a000", [0, 0], [-negY, posY], [0, 0]),
+            makeArrow("Y", "#00a000", 0, posY, 0, 0, 1, 0, posY),
+            makeLabel("Y", "#00a000", 0, posY * 1.12, 0),
             // Z軸 (左手系: 表示上 -z が正方向)
-            makeLine("z軸", "#0060d0", [0, 0], [0, 0], [negLen, -posLen]),
-            makeArrow("Z", "#0060d0", 0, 0, -posLen, 0, 0, -1),
-            makeLabel("Z", "#0060d0", 0, 0, -posLen * 1.12)
+            makeLine("z軸", "#0060d0", [0, 0], [0, 0], [negZ, -posZ]),
+            makeArrow("Z", "#0060d0", 0, 0, -posZ, 0, 0, -1, posZ),
+            makeLabel("Z", "#0060d0", 0, 0, -posZ * 1.12)
         ];
     }
 
@@ -281,9 +292,9 @@ document.addEventListener("DOMContentLoaded", () => {
     function plot3DChart(divId, traces) {
         const layout = {
             scene: {
-                xaxis: { title: "x", gridcolor: "#e0e0e0", showspikes: false },
-                yaxis: { title: "y", gridcolor: "#e0e0e0", showspikes: false },
-                zaxis: { title: "z", gridcolor: "#e0e0e0", showspikes: false },
+                xaxis: { title: "x", gridcolor: "#e0e0e0", showspikes: false, exponentformat: "none", hoverformat: ".3~f" },
+                yaxis: { title: "y", gridcolor: "#e0e0e0", showspikes: false, exponentformat: "none", hoverformat: ".3~f" },
+                zaxis: { title: "z", gridcolor: "#e0e0e0", showspikes: false, exponentformat: "none", hoverformat: ".3~f" },
                 camera: {
                     // X=手前, Y=上, Z=右 の見え方にする
                     eye: { x: 1.6, y: 0.4, z: -0.5 },
@@ -311,15 +322,43 @@ document.addEventListener("DOMContentLoaded", () => {
      * Plotly 2D チャートを描画する
      */
     function plot2DChart(divId, traces) {
+        // --- 描画スケール（表示範囲）を全体像の1.1倍に広げる処理 ---
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        for (const trace of traces) {
+            if (!trace.x || !trace.y) continue;
+            for (let i = 0; i < trace.x.length; i++) {
+                const x = trace.x[i];
+                const y = trace.y[i];
+                if (x === null || y === null || isNaN(x) || isNaN(y)) continue;
+                if (x < minX) minX = x;
+                if (x > maxX) maxX = x;
+                if (y < minY) minY = y;
+                if (y > maxY) maxY = y;
+            }
+        }
+        if (minX === Infinity) { minX = -1; maxX = 1; minY = -1; maxY = 1; }
+
+        const cx = (minX + maxX) / 2;
+        const cy = (minY + maxY) / 2;
+        const spanX = (maxX - minX) === 0 ? 2 : (maxX - minX);
+        const spanY = (maxY - minY) === 0 ? 2 : (maxY - minY);
+
+        const rx = spanX * 0.6;
+        const ry = spanY * 0.6;
+
         const layout = {
             xaxis: {
+                range: [cx - rx, cx + rx],
                 zeroline: true, zerolinewidth: 2, zerolinecolor: "#333",
                 gridcolor: "#e0e0e0",
-                scaleanchor: "y", scaleratio: 1
+                scaleanchor: "y", scaleratio: 1,
+                exponentformat: "none", hoverformat: ".3~f"
             },
             yaxis: {
+                range: [cy - ry, cy + ry],
                 zeroline: true, zerolinewidth: 2, zerolinecolor: "#333",
-                gridcolor: "#e0e0e0"
+                gridcolor: "#e0e0e0",
+                exponentformat: "none", hoverformat: ".3~f"
             },
             annotations: [
                 {   // X軸ラベル（y=0の直線上、右端）

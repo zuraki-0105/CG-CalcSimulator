@@ -27,3 +27,33 @@
 #ellipseParams label span::after {
     content: "：";
 }
+
+/* 2カラムレイアウト (入力欄とプレビュー) */
+.shape-container {
+    display: flex;
+    flex-wrap: wrap; /* 画面が狭い場合は縦積みにする */
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.input-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.preview-column {
+    flex: 1;
+    min-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 16px;
+}
+
+.preview-column h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}

@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../common/css/common.css?v=@build.timestamp@">
     <link rel="stylesheet" href="../css/shape.css?v=@build.timestamp@">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
     <link rel="icon" href="data:,">
 </head>
 
@@ -14,63 +15,72 @@
     <h1>3D 図形選択</h1>
     <p>図形を選択してください。</p>
 
-    <select id="shapeType">
-        <option value="">--- 選択してください ---</option>
-        <option value="cuboid">直方体 / 立方体</option>
-        <option value="sphere">球体 / 楕円体</option>
-    </select>
+    <div class="shape-container">
+        <div class="input-column">
+            <select id="shapeType">
+                <option value="">--- 選択してください ---</option>
+                <option value="cuboid">直方体 / 立方体</option>
+                <option value="sphere">球体 / 楕円体</option>
+            </select>
 
-    <hr>
+            <hr>
 
-    <div id="cuboidParams" class="hidden">
-        <h3>直方体のパラメータ</h3>
-        <label><span>基準点(左下奥) X</span>
-            <input type="number" id="cuboidX" step="any" value="0">
-        </label>
-        <label><span>基準点(左下奥) Y</span>
-            <input type="number" id="cuboidY" step="any" value="0">
-        </label>
-        <label><span>基準点(左下奥) Z</span>
-            <input type="number" id="cuboidZ" step="any" value="0">
-        </label>
-        <label><span>幅(X方向)</span>
-            <input type="number" id="cuboidWidth" step="any" value="1">
-        </label>
-        <label><span>高さ(Y方向)</span>
-            <input type="number" id="cuboidHeight" step="any" value="1">
-        </label>
-        <label><span>奥行き(Z方向)</span>
-            <input type="number" id="cuboidDepth" step="any" value="1">
-        </label>
-    </div>
+            <div id="cuboidParams" class="hidden">
+                <h3>直方体のパラメータ</h3>
+                <label><span>基準点(左下奥) X</span>
+                    <input type="number" id="cuboidX" step="any" value="0">
+                </label>
+                <label><span>基準点(左下奥) Y</span>
+                    <input type="number" id="cuboidY" step="any" value="0">
+                </label>
+                <label><span>基準点(左下奥) Z</span>
+                    <input type="number" id="cuboidZ" step="any" value="0">
+                </label>
+                <label><span>幅(X方向)</span>
+                    <input type="number" id="cuboidWidth" step="any" value="1">
+                </label>
+                <label><span>高さ(Y方向)</span>
+                    <input type="number" id="cuboidHeight" step="any" value="1">
+                </label>
+                <label><span>奥行き(Z方向)</span>
+                    <input type="number" id="cuboidDepth" step="any" value="1">
+                </label>
+            </div>
 
-    <div id="sphereParams" class="hidden">
-        <h3>球体 / 楕円体のパラメータ</h3>
-        <label><span>中心点 x</span>
-            <input type="number" id="sphereCx" step="any" value="0">
-        </label>
-        <label><span>中心点 y</span>
-            <input type="number" id="sphereCy" step="any" value="0">
-        </label>
-        <label><span>中心点 z</span>
-            <input type="number" id="sphereCz" step="any" value="0">
-        </label>
-        <label><span>半径 Rx</span>
-            <input type="number" id="sphereRx" step="any" value="1">
-        </label>
-        <label><span>半径 Ry</span>
-            <input type="number" id="sphereRy" step="any" value="1">
-        </label>
-        <label><span>半径 Rz</span>
-            <input type="number" id="sphereRz" step="any" value="1">
-        </label>
-    </div>
+            <div id="sphereParams" class="hidden">
+                <h3>球体 / 楕円体のパラメータ</h3>
+                <label><span>中心点 x</span>
+                    <input type="number" id="sphereCx" step="any" value="0">
+                </label>
+                <label><span>中心点 y</span>
+                    <input type="number" id="sphereCy" step="any" value="0">
+                </label>
+                <label><span>中心点 z</span>
+                    <input type="number" id="sphereCz" step="any" value="0">
+                </label>
+                <label><span>半径 Rx</span>
+                    <input type="number" id="sphereRx" step="any" value="1">
+                </label>
+                <label><span>半径 Ry</span>
+                    <input type="number" id="sphereRy" step="any" value="1">
+                </label>
+                <label><span>半径 Rz</span>
+                    <input type="number" id="sphereRz" step="any" value="1">
+                </label>
+            </div>
 
-    <hr>
-    <div class="btn-group">
-        <button type="button" id="nextBtn" class="btn-primary">次へ</button>
-        <button type="button" id="backBtn" class="btn-secondary">戻る</button>
-    </div>
+            <hr>
+            <div class="btn-group">
+                <button type="button" id="nextBtn" class="btn-primary">次へ</button>
+                <button type="button" id="backBtn" class="btn-secondary">戻る</button>
+            </div>
+        </div><!-- /.input-column -->
+
+        <div class="preview-column">
+            <h3>プレビュー</h3>
+            <div id="previewArea3D" style="width: 400px; height: 400px;"></div>
+        </div><!-- /.preview-column -->
+    </div><!-- /.shape-container -->
 
     <script src="../../common/js/util.js?v=@build.timestamp@" type="module"></script>
     <script src="../js/shape.js?v=@build.timestamp@" type="module"></script>

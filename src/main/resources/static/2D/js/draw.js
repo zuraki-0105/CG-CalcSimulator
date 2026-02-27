@@ -102,20 +102,45 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
+        // --- 描画スケール（表示範囲）を全体像の0.6倍に広げる処理 ---
+        const allPts = [...origClosed, ...transClosed];
+        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+        for (const p of allPts) {
+            if (p.x === null || p.y === null || isNaN(p.x) || isNaN(p.y)) continue;
+            if (p.x < minX) minX = p.x;
+            if (p.x > maxX) maxX = p.x;
+            if (p.y < minY) minY = p.y;
+            if (p.y > maxY) maxY = p.y;
+        }
+        if (minX === Infinity) { minX = -1; maxX = 1; minY = -1; maxY = 1; }
+
+        const cx = (minX + maxX) / 2;
+        const cy = (minY + maxY) / 2;
+        const spanX = (maxX - minX) === 0 ? 2 : (maxX - minX);
+        const spanY = (maxY - minY) === 0 ? 2 : (maxY - minY);
+
+        const rx = spanX * 0.6;
+        const ry = spanY * 0.6;
+
         const layout = {
             xaxis: {
+                range: [cx - rx, cx + rx],
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
                 gridcolor: "#e0e0e0",
                 scaleanchor: "y",    // x,y 比率を固定
-                scaleratio: 1
+                scaleratio: 1,
+                exponentformat: "none",
+                hoverformat: ".3~f"
             },
             yaxis: {
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
-                gridcolor: "#e0e0e0"
+                gridcolor: "#e0e0e0",
+                exponentformat: "none",
+                hoverformat: ".3~f"
             },
             annotations: [
                 {   // X軸ラベル（y=0の直線上、右端）
