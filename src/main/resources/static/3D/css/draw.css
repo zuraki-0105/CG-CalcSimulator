@@ -2,10 +2,13 @@
 
 #canvasContainer3D {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 30px;
     margin-bottom: 20px;
     align-items: flex-start;
+    padding-bottom: 15px;
+    /* スクロールバー用の余裕 */
 }
 
 .canvas-wrapper {
@@ -27,9 +30,8 @@
 
 /* Plotly div */
 #plotBefore,
+#plotAfter3D,
 #plotAfter {
-    width: 500px;
-    height: 500px;
     border: 1px solid #ddd;
     border-radius: 4px;
 }

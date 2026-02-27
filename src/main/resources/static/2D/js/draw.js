@@ -41,17 +41,23 @@ document.addEventListener("DOMContentLoaded", () => {
         req.transforms = toTransformCommands(queue);
 
         try {
+            console.log("========== [Fetch API 送信 (POST)] ==========");
+            console.log("[draw.js] サーバーへ送信する JSON (文字列化前 JS Object):", req);
+            console.log("[draw.js] 実際の送信データ (JSON文字列):", JSON.stringify(req));
+
             const res = await fetch("/api/2d/draw", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(req)
             });
 
-            if (!res.ok) {
-                throw new Error(`HTTP ${res.status}`);
-            }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
             const data = await res.json();
+
+            console.log("========== [Fetch API 受信 (レスポンス)] ==========");
+            console.log("[draw.js] サーバー・Javaから受け取った JSON (パース済 JS Object):", data);
+
             drawShapes(data);
 
         } catch (err) {

@@ -60,7 +60,7 @@
 
                     <div id="cameraCoordinates">
                         <p style="font-size: 0.85em; color: #555; margin-bottom: 15px;">
-                            世界座標系におけるカメラ(視点)の絶対座標を入力してください。<br>
+                            世界座標系におけるカメラ(視点)の座標を入力してください。<br>
                             ※投影面 Z = <span id="modalProjZDisplay"></span><br>
                             ※デフォルトは (0, 0, 0) です。
                         </p>
@@ -75,7 +75,25 @@
                         </div>
                     </div>
                 </section>
-                <!-- 今後ここに設定が追加されていく想定 -->
+
+                <section class="settings-section">
+                    <h5>描画する図形</h5>
+                    <div class="modal-input-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="drawBefore" checked> 変換前(3D)
+                        </label>
+                    </div>
+                    <div class="modal-input-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="drawAfter3D" checked> 変換後(3D)
+                        </label>
+                    </div>
+                    <div class="modal-input-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="drawAfter2D" checked> 透視投影結果(2D)
+                        </label>
+                    </div>
+                </section>
             </div>
             <div class="modal-btn-group">
                 <button type="button" id="saveSettingsBtn" class="btn-primary">決定</button>

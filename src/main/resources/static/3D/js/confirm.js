@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (projType === "perspective") {
             const camX = sessionStorage.getItem("cameraX") || 0;
             const camY = sessionStorage.getItem("cameraY") || 0;
-            const camZ = sessionStorage.getItem("cameraZ") || -4;
+            const camZ = sessionStorage.getItem("cameraZ") || 0;
 
             sessionStorage.setItem("cameraX", camX);
             sessionStorage.setItem("cameraY", camY);
@@ -46,10 +46,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // 簡単なバリデーション（投影面と同じZ座標は計算不可となるため警告）
             if (Number(camZ) === projZ) {
-                alert("視点と投影面のZ値が同じです。");
+                alert("視点と投影面のZ値が同じです");
                 return;
             }
-            
+
         }
 
         location.href = "./draw.html";
@@ -70,6 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("cameraY").value = sessionStorage.getItem("cameraY") || 0;
         document.getElementById("cameraZ").value = sessionStorage.getItem("cameraZ") || 0;
 
+        // 描画設定の復元（未設定時はtrueをデフォルトとする）
+        document.getElementById("drawBefore").checked = sessionStorage.getItem("showDrawBefore") !== "false";
+        document.getElementById("drawAfter3D").checked = sessionStorage.getItem("showDrawAfter3D") !== "false";
+        document.getElementById("drawAfter2D").checked = sessionStorage.getItem("showDrawAfter2D") !== "false";
+
         modal.style.display = "flex";
     });
 
@@ -88,9 +93,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const x = document.getElementById("cameraX").valueAsNumber;
         const y = document.getElementById("cameraY").valueAsNumber;
         const z = document.getElementById("cameraZ").valueAsNumber;
+        const drawBefore = document.getElementById("drawBefore").checked;
+        const drawAfter3D = document.getElementById("drawAfter3D").checked;
+        const drawAfter2D = document.getElementById("drawAfter2D").checked;
+
+        if (!drawBefore && !drawAfter3D && !drawAfter2D) {
+            if (!confirm("描画する図形がすべてOFFになっています。何も描画されませんがよろしいですか？")) {
+                return;
+            }
+        }
 
         if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
-            alert("視点座標はすべて数値を入力してください。");
+            alert("視点座標はすべて数値を入力してください");
             return;
         }
 
@@ -98,6 +112,12 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem("cameraY", y);
         sessionStorage.setItem("cameraZ", z);
 
+        // 描画設定の保存
+        sessionStorage.setItem("showDrawBefore", drawBefore);
+        sessionStorage.setItem("showDrawAfter3D", drawAfter3D);
+        sessionStorage.setItem("showDrawAfter2D", drawAfter2D);
+
+        console.log("[confirm.js] 追加/更新した詳細設定 (JS Object):", { camX: x, camY: y, camZ: z, drawBefore, drawAfter3D, drawAfter2D });
         modal.style.display = "none";
     });
 

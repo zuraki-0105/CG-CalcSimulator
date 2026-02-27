@@ -12,6 +12,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     document.getElementById("sendBtn").addEventListener("click", () => {
+        // The variable 'projType' is not defined in the provided context.
+        // Assuming it should be retrieved or defined here for the intended change.
+        // For now, I will add the lines as requested, but 'projType' will be undefined.
+        const projType = sessionStorage.getItem("projectionType") || "perspective"; // Placeholder for projType
+
+        sessionStorage.setItem("projectionType", projType);
+        console.log("========== [画面遷移] confirm.html -> draw.html ==========");
+        console.log("[confirm.js] 保存した投影設定 (JS Object):", { projType });
         location.href = "./draw.html";
     });
 

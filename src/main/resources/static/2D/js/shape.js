@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextBtn = document.getElementById("nextBtn");
     const backBtn = document.getElementById("backBtn");
 
-    
+
 
     // 図形選択切り替え
     shapeSelect.addEventListener("change", () => {
@@ -16,20 +16,20 @@ document.addEventListener("DOMContentLoaded", () => {
         rectParams.classList.add("hidden");
         ellipseParams.classList.add("hidden");
 
-        if(shape === "rectangle") {
+        if (shape === "rectangle") {
             rectParams.classList.remove("hidden");
         }
 
         if (shape === "ellipse") {
             ellipseParams.classList.remove("hidden");
         }
-        
+
     });
 
     nextBtn.addEventListener("click", () => {
         const shape = shapeSelect.value;
         if (!shape) {
-            alert("Select shape type");
+            alert("図形の種類を選択してください");
             return;
         }
 
@@ -42,44 +42,51 @@ document.addEventListener("DOMContentLoaded", () => {
             const h = rectHeight.value;
 
             if (!x || !y || !w || !h) {
-                alert("Input all values");
+                alert("すべての値を入力してください");
                 return;
             }
-            if( w <= 0 || h <= 0 ) {
-                alert("Must width, height > 0");
+            if (w <= 0 || h <= 0) {
+                alert("幅, 高さ は 0 より大きい必要があります");
                 return;
             }
 
             sessionStorage.setItem("x", Number(x));
             sessionStorage.setItem("y", Number(y));
-            sessionStorage.setItem("width", Number(w));
-            sessionStorage.setItem("height", Number(h));
+            sessionStorage.setItem("width", parseFloat(w));
+            sessionStorage.setItem("height", parseFloat(h));
 
-            clearInputs(rectParams);
+            console.log("========== [画面遷移] shape.html -> trans-matrix.html ==========");
+            console.log("[shape.js] 保存した矩形データ (JS Object):", { x, y, w, h });
             setInputs(rectParams, [0, 0, 1, 1]);
         }
 
         if (shape === "ellipse") {
+            const ellipseX = document.getElementById("ellipseX");
+            const ellipseY = document.getElementById("ellipseY");
+            const ellipseA = document.getElementById("ellipseA");
+            const ellipseB = document.getElementById("ellipseB");
+
             const x = ellipseX.value;
             const y = ellipseY.value;
             const a = ellipseA.value;
             const b = ellipseB.value;
 
             if (!x || !y || !a || !b) {
-                alert("Input all values");
+                alert("すべての値を入力してください");
                 return;
             }
-            if( a <= 0 || b <= 0 ) {
-                alert("Must a, b > 0");
+            if (a <= 0 || b <= 0) {
+                alert("a, b は 0 より大きい必要があります");
                 return;
             }
 
             sessionStorage.setItem("x", Number(x));
             sessionStorage.setItem("y", Number(y));
             sessionStorage.setItem("a", Number(a));
-            sessionStorage.setItem("b", Number(b));
+            sessionStorage.setItem("b", parseFloat(b));
 
-            clearInputs(ellipseParams); 
+            console.log("========== [画面遷移] shape.html -> trans-matrix.html ==========");
+            console.log("[shape.js] 保存した楕円データ (JS Object):", { x, y, a, b });
             setInputs(ellipseParams, [0, 0, 1, 1]);
         }
 
@@ -88,9 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     backBtn.addEventListener("click", () => {
         if (history.length > 1) {
-          history.back();
+            history.back();
         } else {
-          location.href = "/index.html";
+            location.href = "/index.html";
         }
     });
 });

@@ -49,15 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
         req.projectionZ = projZ;
 
         try {
+            const requestData = req;
+            console.log("========== [Fetch API 送信 (POST)] ==========");
+            console.log("[draw.js] サーバーへ送信する JSON (文字列化前 JS Object):", requestData);
+            console.log("[draw.js] 実際の送信データ (JSON文字列):", JSON.stringify(requestData));
+
             const res = await fetch("/api/3d/draw", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(req)
+                body: JSON.stringify(requestData)
             });
 
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
             const data = await res.json();
+
+            console.log("========== [Fetch API 受信 (レスポンス)] ==========");
+            console.log("[draw.js] サーバー・Javaから受け取った JSON (パース済 JS Object):", data);
+
             drawShapes(data, projType, projZ, perspD);
 
         } catch (err) {
@@ -71,61 +80,85 @@ document.addEventListener("DOMContentLoaded", () => {
         const original = data.original;      // 3D points [{x,y,z}, ...]
         const transformed = data.transformed; // 3D points
 
-        // --- 変換前: Plotly scatter3d でワイヤーフレーム表示 (左手系: Z軸反転) ---
+        // 設定の取得 (デフォルトは表示)
+        const showDrawBefore = sessionStorage.getItem("showDrawBefore") !== "false";
+        const showDrawAfter3D = sessionStorage.getItem("showDrawAfter3D") !== "false";
+        const showDrawAfter2D = sessionStorage.getItem("showDrawAfter2D") !== "false";
+
+        // コンテナの表示制御
+        document.getElementById("wrapperBefore").style.display = showDrawBefore ? "flex" : "none";
+        document.getElementById("wrapperAfter3D").style.display = showDrawAfter3D ? "flex" : "none";
+        document.getElementById("wrapperAfter2D").style.display = showDrawAfter2D ? "flex" : "none";
+
         const shapeType = sessionStorage.getItem("shapeType");
-        let traceWire;
-        if (shapeType === "sphere") {
-            traceWire = buildSphereTrace3D(original, "変換前", "#333333");
-        } else {
-            traceWire = buildCuboidTrace3D(original, "変換前", "#333333");
+
+        // --- 変換前: Plotly scatter3d でワイヤーフレーム表示 (左手系: Z軸反転) ---
+        if (showDrawBefore) {
+            let traceWire;
+            if (shapeType === "sphere") {
+                traceWire = buildSphereTrace3D(original, "変換前", "#333333");
+            } else {
+                traceWire = buildCuboidTrace3D(original, "変換前", "#333333");
+            }
+            const axisTraces = buildAxisTraces3D(original);
+            plot3DChart("plotBefore", [traceWire, ...axisTraces]);
         }
 
-        // 三次元座標軸を描画（原点を貫通する X赤, Y緑, Z青 の軸線）
-        const axisTraces = buildAxisTraces3D(original);
-
-        plot3DChart("plotBefore", [traceWire, ...axisTraces]);
+        // --- 変換後(3D): Plotly scatter3d (左手系: Z軸反転) ---
+        if (showDrawAfter3D) {
+            let traceWireAfter3D;
+            if (shapeType === "sphere") {
+                traceWireAfter3D = buildSphereTrace3D(transformed, "変換後(3D)", "#333333"); // 少し色を変える
+            } else {
+                traceWireAfter3D = buildCuboidTrace3D(transformed, "変換後(3D)", "#333333");
+            }
+            const axisTracesAfter3D = buildAxisTraces3D(transformed);
+            plot3DChart("plotAfter3D", [traceWireAfter3D, ...axisTracesAfter3D]);
+        }
 
         // --- 変換後: 投影タイプに応じて切替 (2D) ---
-        let projectedPts;
-        if (projType === "perspective") {
-            // 世界座標系におけるカメラ(視点)の絶対座標を取得
-            const camX = Number(sessionStorage.getItem("cameraX") || 0);
-            const camY = Number(sessionStorage.getItem("cameraY") || 0);
-            const camZ = Number(sessionStorage.getItem("cameraZ") || -4);
+        if (showDrawAfter2D) {
+            let projectedPts;
+            if (projType === "perspective") {
+                // 世界座標系におけるカメラ(視点)の絶対座標を取得
+                const camX = Number(sessionStorage.getItem("cameraX") || 0);
+                const camY = Number(sessionStorage.getItem("cameraY") || 0);
+                const camZ = Number(sessionStorage.getItem("cameraZ") || 0);
 
-            // 視点 E(camX, camY, camZ) → 投影面 z = projZ へ投影する
-            projectedPts = transformed.map(p => {
-                // 視点から対象の頂点までのZ方向の距離
-                const dz = p.z - camZ;
+                // 視点 E(camX, camY, camZ) → 投影面 z = projZ へ投影する
+                projectedPts = transformed.map(p => {
+                    // 視点から対象の頂点までのZ方向の距離
+                    const dz = p.z - camZ;
 
-                // 視点から投影面までのZ方向の距離
-                const d = projZ - camZ;
+                    // 視点から投影面までのZ方向の距離
+                    const d = projZ - camZ;
 
-                // 対象が視点と同じZ座標にある（dz == 0）場合は特異点として扱う
-                if (Math.abs(dz) < 1e-9) {
-                    return { x: p.x * 1e6, y: p.y * 1e6 }; // 画面外へ飛ばす
-                }
+                    // 対象が視点と同じZ座標にある（dz == 0）場合は特異点として扱う
+                    if (Math.abs(dz) < 1e-9) {
+                        return { x: p.x * 1e6, y: p.y * 1e6 }; // 画面外へ飛ばす
+                    }
 
-                // 相似比 scale = 投影面までの距離 / 対象頂点までの距離
-                const scale = d / dz;
+                    // 相似比 scale = 投影面までの距離 / 対象頂点までの距離
+                    const scale = d / dz;
 
-                return {
-                    x: camX + (p.x - camX) * scale,
-                    y: camY + (p.y - camY) * scale
-                };
-            });
-        } else {
-            // 平行投影（正投影）: Z を無視して X,Y をそのまま使う
-            projectedPts = transformed.map(p => ({ x: p.x, y: p.y }));
+                    return {
+                        x: camX + (p.x - camX) * scale,
+                        y: camY + (p.y - camY) * scale
+                    };
+                });
+            } else {
+                // 平行投影（正投影）: Z を無視して X,Y をそのまま使う
+                projectedPts = transformed.map(p => ({ x: p.x, y: p.y }));
+            }
+
+            let traceAfterWireframe;
+            if (sessionStorage.getItem("shapeType") === "sphere") {
+                traceAfterWireframe = buildSphereTrace2D(projectedPts, "変換後(2D)", "#d9534f", "solid");
+            } else {
+                traceAfterWireframe = buildCuboidTrace2D(projectedPts, "変換後(2D)", "#d9534f", "solid");
+            }
+            plot2DChart("plotAfter", [traceAfterWireframe]);
         }
-
-        let traceAfterWireframe;
-        if (sessionStorage.getItem("shapeType") === "sphere") {
-            traceAfterWireframe = buildSphereTrace2D(projectedPts, "変換後", "#d9534f", "solid");
-        } else {
-            traceAfterWireframe = buildCuboidTrace2D(projectedPts, "変換後", "#d9534f", "solid");
-        }
-        plot2DChart("plotAfter", [traceAfterWireframe]);
     }
 
     /**

@@ -134,6 +134,19 @@ label {
     margin-top: 0;
 }
 
+.modal-input-group label.checkbox-label {
+    justify-content: flex-start;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.modal-input-group input[type="checkbox"] {
+    width: auto;
+    margin-left: 0;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
 .modal-btn-group {
     display: flex;
     justify-content: flex-end;

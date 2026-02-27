@@ -1,6 +1,8 @@
 import { clearInputs, setInputs } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
+    console.log("/3D/js/shape.js が読み込まれました");
+
     const shapeSelect = document.getElementById("shapeType");
     const cuboidParams = document.getElementById("cuboidParams");
     const sphereParams = document.getElementById("sphereParams");
@@ -23,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
     nextBtn.addEventListener("click", () => {
         const shape = shapeSelect.value;
         if (!shape) {
-            alert("Select shape type");
+            alert("図形の種類を選択してください");
             return;
         }
 
@@ -38,11 +40,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const d = document.getElementById("cuboidDepth").value;
 
             if (!x || !y || !z || !w || !h || !d) {
-                alert("Input all values");
+                alert("すべての値を入力してください");
                 return;
             }
             if (w <= 0 || h <= 0 || d <= 0) {
-                alert("Must width, height, depth > 0");
+                alert("幅, 高さ, 奥行き は 0 より大きい必要があります");
                 return;
             }
 
@@ -53,7 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.setItem("height", Number(h));
             sessionStorage.setItem("depth", Number(d));
 
-            clearInputs(cuboidParams);
+            console.log("========== [画面遷移] shape.html -> trans-matrix.html ==========");
+            console.log("[shape.js] 保存した直方体データ (JS Object):", { x, y, z, w, h, d });
+            window.location.href = "trans-matrix.html";
             setInputs(cuboidParams, [0, 0, 0, 1, 1, 1]);
         } else if (shape === "sphere") {
             const cx = document.getElementById("sphereCx").value;
@@ -64,11 +68,11 @@ document.addEventListener("DOMContentLoaded", () => {
             const rz = document.getElementById("sphereRz").value;
 
             if (!cx || !cy || !cz || !rx || !ry || !rz) {
-                alert("Input all values");
+                alert("すべての値を入力してください");
                 return;
             }
             if (rx <= 0 || ry <= 0 || rz <= 0) {
-                alert("Must rx, ry, rz > 0");
+                alert("rx, ry, rz は 0 より大きい必要があります");
                 return;
             }
 
@@ -79,11 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
             sessionStorage.setItem("ry", Number(ry));
             sessionStorage.setItem("rz", Number(rz));
 
-            clearInputs(sphereParams);
+            console.log("========== [画面遷移] shape.html -> trans-matrix.html ==========");
+            console.log("[shape.js] 保存した球体データ (JS Object):", { cx, cy, cz, rx, ry, rz });
+            window.location.href = "trans-matrix.html";
             setInputs(sphereParams, [0, 0, 0, 1, 1, 1]);
         }
-
-        location.href = "./trans-matrix.html";
     });
 
     backBtn.addEventListener("click", () => {

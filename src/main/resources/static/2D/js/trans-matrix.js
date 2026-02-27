@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     addBtn.addEventListener("click", () => {
         const transform = transformSelect.value;
         if (!transform) {
-            alert("Select transform type");
+            alert("変換の種類を選択してください");
             return;
         }
 
@@ -32,11 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 const tx = document.getElementById("tx").valueAsNumber;
                 const ty = document.getElementById("ty").valueAsNumber;
                 if (Number.isNaN(tx) || Number.isNaN(ty)) {
-                    alert("Input Tx, Ty");
+                    alert("Tx, Ty を入力してください");
                     return;
                 }
                 if (tx === 0 && ty === 0) {
-                    alert("Setting both Tx, Ty to \"0\" has no effect.");
+                    alert("Tx, Ty を 0 に設定しても変化しません");
                     return;
                 }
                 entry = { type: "translation", tx, ty };
@@ -49,15 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 const sx = document.getElementById("sx").valueAsNumber;
                 const sy = document.getElementById("sy").valueAsNumber;
                 if (Number.isNaN(sx) || Number.isNaN(sy)) {
-                    alert("Input Sx, Sy");
+                    alert("Sx, Sy を入力してください");
                     return;
                 }
                 if (sx <= 0 || sy <= 0) {
-                    alert("Must Sx, Sy > 0");
+                    alert("Sx, Sy は 0 より大きい必要があります");
                     return;
                 }
                 if (sx === 1 && sy === 1) {
-                    alert("Setting both Sx, Sy to \"1\" has no effect.");
+                    alert("Sx, Sy を 1 に設定しても変化しません");
                     return;
                 }
 
@@ -70,11 +70,11 @@ document.addEventListener("DOMContentLoaded", () => {
             case "rotation": {
                 const theta = document.getElementById("theta").valueAsNumber;
                 if (Number.isNaN(theta)) {
-                    alert("Input Theta");
+                    alert("角度(Theta)を入力してください");
                     return;
                 }
                 if (theta === 0) {
-                    alert("Setting Theta to \"0\" has no effect.");
+                    alert("角度(Theta)を 0 に設定しても変化しません");
                     return;
                 }
                 entry = { type: "rotation", theta };
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     for (let j = 0; j < 3; j++) {
                         const v = document.getElementById(`m${i}${j}`).valueAsNumber;
                         if (Number.isNaN(v)) {
-                            alert("Input all matrix values");
+                            alert("すべての行列の値を入力してください");
                             return;
                         }
                         row.push(v);
@@ -104,11 +104,13 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
-        // 追加
-        transformQueue.push(entry);
-        sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
-
-        renderList();
+        if (entry) {
+            transformQueue.push(entry);
+            sessionStorage.setItem("transformQueue", JSON.stringify(transformQueue));
+            console.log("[trans-matrix.js] キューに追加した変換行列 (JS Object):", entry);
+            console.log("[trans-matrix.js] 現在の保存キュー (JSON文字列):", JSON.stringify(transformQueue));
+            renderList();
+        }
     });
 
     transformSelect.addEventListener("change", () => {
@@ -136,6 +138,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     nextBtn.addEventListener("click", () => {
+        const queue = JSON.parse(sessionStorage.getItem("transformQueue") || "[]");
+        console.log("========== [画面遷移] trans-matrix.html -> confirm.html ==========");
+        console.log("[trans-matrix.js] 引き継ぐ変換行列キュー (パース済 JS Array):", queue);
         location.href = "./confirm.html";
     });
 

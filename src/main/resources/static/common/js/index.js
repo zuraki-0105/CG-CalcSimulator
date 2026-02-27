@@ -1,19 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("/2d/js/index.jsが読み込まれました");
+    console.log("/common/js/index.jsが読み込まれました");
     const nextBtn = document.getElementById("nextBtn");
 
     nextBtn.addEventListener("click", () => {
         const selected = document.querySelector('input[name="dimension"]:checked');
 
         if (!selected) {
-            alert("Select a dimension");
+            alert("次元を選択してください");
             return;
         }
 
-        const dimension = selected.value;
-        sessionStorage.setItem("dimension", dimension);
+        sessionStorage.clear();
+        sessionStorage.setItem("dimension", selected.value);
+        console.log("========== [次元選択] ==========");
+        console.log("[index.js] 選択された次元:", selected.value);
 
-        if (dimension === "2D") {
+        if (selected.value === "2D") {
             console.log("2Dが選択されました");
             location.href = "./2D/html/shape.html";
         } else {
