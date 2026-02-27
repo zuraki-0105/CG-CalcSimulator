@@ -35,7 +35,6 @@ build/
 ### Log files ###
 *.log
 compile_log.txt
-deploy.ps1
 
 ### Deploy Guide ###
 manual_deploy.md

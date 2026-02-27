@@ -88,23 +88,30 @@ document.addEventListener("DOMContentLoaded", () => {
         // --- 変換後: 投影タイプに応じて切替 (2D) ---
         let projectedPts;
         if (projType === "perspective") {
-            // 透視投影: 図形のXY中心の真上に視点を置く
-            const eyeZ = projZ + perspD;
+            // 世界座標系におけるカメラ(視点)の絶対座標を取得
+            const camX = Number(sessionStorage.getItem("cameraX") || 0);
+            const camY = Number(sessionStorage.getItem("cameraY") || 0);
+            const camZ = Number(sessionStorage.getItem("cameraZ") || -4);
 
-            // 図形の XY 重心を求める
-            const cx = transformed.reduce((s, p) => s + p.x, 0) / transformed.length;
-            const cy = transformed.reduce((s, p) => s + p.y, 0) / transformed.length;
-
-            // 視点 (cx, cy, eyeZ) → 投影面 z = projZ へ投影
+            // 視点 E(camX, camY, camZ) → 投影面 z = projZ へ投影する
             projectedPts = transformed.map(p => {
-                const dz = eyeZ - p.z;
+                // 視点から対象の頂点までのZ方向の距離
+                const dz = p.z - camZ;
+
+                // 視点から投影面までのZ方向の距離
+                const d = projZ - camZ;
+
+                // 対象が視点と同じZ座標にある（dz == 0）場合は特異点として扱う
                 if (Math.abs(dz) < 1e-9) {
-                    return { x: (p.x - cx) * 1e6 + cx, y: (p.y - cy) * 1e6 + cy };
+                    return { x: p.x * 1e6, y: p.y * 1e6 }; // 画面外へ飛ばす
                 }
-                const scale = perspD / dz;
+
+                // 相似比 scale = 投影面までの距離 / 対象頂点までの距離
+                const scale = d / dz;
+
                 return {
-                    x: cx + (p.x - cx) * scale,
-                    y: cy + (p.y - cy) * scale
+                    x: camX + (p.x - camX) * scale,
+                    y: camY + (p.y - camY) * scale
                 };
             });
         } else {

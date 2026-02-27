@@ -12,12 +12,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // 透視投影オプションの表示切替
+    const perspectiveOptions = document.getElementById("perspectiveOptions");
+    const updateProjectionOptionsVisibility = () => {
+        const isPerspective = document.querySelector('input[name="projectionType"]:checked').value === "perspective";
+        perspectiveOptions.style.display = isPerspective ? "block" : "none";
+    };
+
     document.querySelectorAll('input[name="projectionType"]').forEach(radio => {
-        radio.addEventListener("change", () => {
-            const isPerspective = document.querySelector('input[name="projectionType"]:checked').value === "perspective";
-            document.getElementById("perspectiveOptions").style.display = isPerspective ? "block" : "none";
-        });
+        radio.addEventListener("change", updateProjectionOptionsVisibility);
     });
+
+    // 初期ロード時にも表示状態を同期
+    updateProjectionOptionsVisibility();
 
     document.getElementById("sendBtn").addEventListener("click", () => {
         const projZ = document.getElementById("projectionZ").valueAsNumber;
@@ -25,25 +31,74 @@ document.addEventListener("DOMContentLoaded", () => {
             alert("投影面のZ値を入力してください");
             return;
         }
-        if (projZ <= 0) {
-            alert("投影面のZ値は 0 より大きい値（Z > 0）を指定してください。");
-            return;
-        }
-
         const projType = document.querySelector('input[name="projectionType"]:checked').value;
         sessionStorage.setItem("projectionZ", projZ);
         sessionStorage.setItem("projectionType", projType);
 
         if (projType === "perspective") {
-            const d = document.getElementById("perspectiveD").valueAsNumber;
-            if (Number.isNaN(d) || d <= 0) {
-                alert("視点距離 d は 0 より大きい値を入力してください");
+            const camX = sessionStorage.getItem("cameraX") || 0;
+            const camY = sessionStorage.getItem("cameraY") || 0;
+            const camZ = sessionStorage.getItem("cameraZ") || -4;
+
+            sessionStorage.setItem("cameraX", camX);
+            sessionStorage.setItem("cameraY", camY);
+            sessionStorage.setItem("cameraZ", camZ);
+
+            // 簡単なバリデーション（投影面と同じZ座標は計算不可となるため警告）
+            if (Number(camZ) === projZ) {
+                alert("視点と投影面のZ値が同じです。");
                 return;
             }
-            sessionStorage.setItem("perspectiveD", d);
+            
         }
 
         location.href = "./draw.html";
+    });
+
+    // --- 詳細設定モーダルの制御 ---
+    const modal = document.getElementById("settingsModal");
+    const openBtn = document.getElementById("openSettingsBtn");
+    const closeBtn = document.getElementById("cancelSettingsBtn");
+    const saveBtn = document.getElementById("saveSettingsBtn");
+
+    openBtn.addEventListener("click", () => {
+        // 現在の投影面Zを表示用に更新
+        document.getElementById("modalProjZDisplay").textContent = document.getElementById("projectionZ").value || "未入力";
+
+        // sessionStorageから現在の値を復元
+        document.getElementById("cameraX").value = sessionStorage.getItem("cameraX") || 0;
+        document.getElementById("cameraY").value = sessionStorage.getItem("cameraY") || 0;
+        document.getElementById("cameraZ").value = sessionStorage.getItem("cameraZ") || 0;
+
+        modal.style.display = "flex";
+    });
+
+    closeBtn.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    // モーダル外クリックで閉じる
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    saveBtn.addEventListener("click", () => {
+        const x = document.getElementById("cameraX").valueAsNumber;
+        const y = document.getElementById("cameraY").valueAsNumber;
+        const z = document.getElementById("cameraZ").valueAsNumber;
+
+        if (Number.isNaN(x) || Number.isNaN(y) || Number.isNaN(z)) {
+            alert("視点座標はすべて数値を入力してください。");
+            return;
+        }
+
+        sessionStorage.setItem("cameraX", x);
+        sessionStorage.setItem("cameraY", y);
+        sessionStorage.setItem("cameraZ", z);
+
+        modal.style.display = "none";
     });
 
     function renderShapeInfo() {

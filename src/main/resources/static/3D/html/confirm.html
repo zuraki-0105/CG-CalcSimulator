@@ -36,8 +36,8 @@
         <h3>投影の設定</h3>
 
         <div class="radio-group">
-            <label><input type="radio" name="projectionType" value="parallel" checked>平行投影</label>
-            <label><input type="radio" name="projectionType" value="perspective">透視投影</label>
+            <label><input type="radio" name="projectionType" value="perspective" checked>透視投影</label>
+            <label><input type="radio" name="projectionType" value="parallel">平行投影</label>
         </div>
 
         <label>投影面 Z =
@@ -45,13 +45,44 @@
         </label>
 
         <div id="perspectiveOptions" style="display:none; margin-top: 10px;">
-            <p>※ 視点から投影面までの距離 d を指定してください（d &gt; 0）。<br>
-                値が小さいほどパースが強くなります。</p>
-            <label>視点距離 d =
-                <input type="number" id="perspectiveD" step="any" value="5" min="0.01">
-            </label>
+            <button type="button" id="openSettingsBtn" class="btn-secondary" style="margin-top: 10px;">詳細設定</button>
+            <p>※ 視点（カメラ）の有無や位置を指定できます。</p>
         </div>
     </section>
+
+    <!-- 詳細設定 モーダルダイアログ -->
+    <div id="settingsModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content settings-modal-content">
+            <h4>透視投影 詳細設定</h4>
+            <div class="settings-scroll-area">
+                <section class="settings-section">
+                    <h5>視点（カメラ）の設定</h5>
+
+                    <div id="cameraCoordinates">
+                        <p style="font-size: 0.85em; color: #555; margin-bottom: 15px;">
+                            世界座標系におけるカメラ(視点)の絶対座標を入力してください。<br>
+                            ※投影面 Z = <span id="modalProjZDisplay"></span><br>
+                            ※デフォルトは (0, 0, 0) です。
+                        </p>
+                        <div class="modal-input-group">
+                            <label>視点 X = <input type="number" id="cameraX" step="any" value="0"></label>
+                        </div>
+                        <div class="modal-input-group">
+                            <label>視点 Y = <input type="number" id="cameraY" step="any" value="0"></label>
+                        </div>
+                        <div class="modal-input-group">
+                            <label>視点 Z = <input type="number" id="cameraZ" step="any" value="0"></label>
+                        </div>
+                    </div>
+                </section>
+                <!-- 今後ここに設定が追加されていく想定 -->
+            </div>
+            <div class="modal-btn-group">
+                <button type="button" id="saveSettingsBtn" class="btn-primary">決定</button>
+                <button type="button" id="cancelSettingsBtn" class="btn-secondary">キャンセル</button>
+            </div>
+        </div>
+    </div>
 
     <hr>
 
