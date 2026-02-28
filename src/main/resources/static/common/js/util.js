@@ -52,6 +52,8 @@ export function toTransformCommands(queue) {
                 return { type: "rotation", thetaDeg: t.theta };
             case "custom":
                 return { type: "custom", matrix: t.matrix };
+            case "reflection":
+                return { type: "custom", matrix: t.matrix };
             default:
                 return t;
         }
@@ -74,8 +76,12 @@ export function formatTransformEntry(t, index) {
         case "rotation":
             return { text: `${num}:  回  転  (${t.theta}°)`, isHtml: false };
         case "custom": {
-            const matrixText = "{ " + t.matrix.map(row => row.join(", ")).join("\n  ") + " }";
+            const matrixText = "{ " + t.matrix.map(row => row.map(v => Number(v.toFixed(3))).join(", ")).join("\n  ") + " }";
             return { text: `${num}: 任意行列<br>${matrixText}<br>`, isHtml: true };
+        }
+        case "reflection": {
+            const matrixText = "{ " + t.matrix.map(row => row.map(v => Number(v.toFixed(3))).join(", ")).join("\n  ") + " }";
+            return { text: `${num}: 鏡映変換<br>${matrixText}<br>`, isHtml: true };
         }
         default:
             return { text: `${num}: ${t.type}`, isHtml: false };

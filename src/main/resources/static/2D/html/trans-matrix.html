@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../common/css/common.css?v=@build.timestamp@">
     <link rel="stylesheet" href="../css/trans-matrix.css?v=@build.timestamp@">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
     <link rel="icon" href="data:,">
 </head>
 
@@ -19,6 +20,7 @@
         <option value="translation">平行移動</option>
         <option value="scale">拡大縮小</option>
         <option value="rotation">回転(deg)</option>
+        <option value="reflection">鏡映変換</option>
         <option value="custom">任意の変換行列</option>
     </select>
 
@@ -66,6 +68,19 @@
         <p>※ 同次座標行列（通常は最下行が 0 0 1）</p>
     </div>
 
+    <div id="reflectionMatrix" class="hidden">
+        <label>ax + by + c = 0 の各係数を入力</label>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 8px;">
+            <label>a：<input type="number" id="refA" step="any" value="1" style="width: 80px;"></label>
+            <label>b：<input type="number" id="refB" step="any" value="-1" style="width: 80px;"></label>
+            <label>c：<input type="number" id="refC" step="any" value="0" style="width: 80px;"></label>
+        </div>
+        <div class="btn-group" style="margin-top: 10px;">
+            <button type="button" id="previewReflectionBtn" class="btn-accent"
+                style="width: auto; padding: 5px 15px;">プレビューを表示</button>
+        </div>
+    </div>
+
     <hr>
 
     <div class="btn-group">
@@ -79,6 +94,16 @@
     <div class="btn-group">
         <button type="button" id="nextBtn" class="btn-primary">次へ</button>
         <button type="button" id="backBtn" class="btn-secondary">戻る</button>
+    </div>
+
+    <!-- プレビュー用モーダル -->
+    <div id="previewModal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-btn" id="closePreviewBtn">&times;</span>
+            <h2 style="margin-top: 0;">鏡映変換プレビュー</h2>
+            <div id="previewArea" style="width: 400px; height: 400px; margin: 0 auto;"></div>
+            <p id="reflectionStepsText" style="text-align: center; margin-top: 10px; font-weight: bold;"></p>
+        </div>
     </div>
 
     <script src="../../common/js/util.js?v=@build.timestamp@" type="module"></script>
