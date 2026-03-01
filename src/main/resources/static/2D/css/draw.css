@@ -1,10 +1,39 @@
-/* draw.html 固有スタイル */
+/* 2D draw.css */
 
-/* Plotly チャートコンテナ */
+.canvas-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #fff;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    margin: 0 auto 15px;
+
+    /* 親に対して十分なサイズを取るが広がりすぎないようにする */
+    width: 100%;
+    max-width: 650px;
+}
+
+/* Plotly チャートコンテナ
+   - 自身のサイズ指定をやめ、親枠に100%追従 */
 #plotArea {
-    width: 620px;
-    height: 620px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    margin-bottom: 8px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* ChromeスケーリングによるSVGの突き抜け防止 */
+.js-plotly-plot .plotly,
+.js-plotly-plot .plotly svg {
+    max-width: 100% !important;
+}
+
+/* --- レスポンシブ対応 --- */
+@media screen and (max-width: 768px) {
+    .canvas-wrapper {
+        padding: 5px;
+    }
 }

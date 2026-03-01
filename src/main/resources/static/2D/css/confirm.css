@@ -10,7 +10,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: #f8fafc;
-  max-width: 480px;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 /* 変換リスト */
@@ -23,7 +24,8 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: #f8fafc;
-  max-width: 480px;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 /* 合成行列パネル */
@@ -36,5 +38,6 @@
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: #f8fafc;
-  max-width: 480px;
+  max-width: 100%;
+  overflow-x: auto;
 }

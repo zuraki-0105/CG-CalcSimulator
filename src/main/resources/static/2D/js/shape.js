@@ -229,7 +229,8 @@ document.addEventListener("DOMContentLoaded", () => {
             margin: { l: 60, r: 30, t: 30, b: 60 },
             plot_bgcolor: "#fafafa",
             paper_bgcolor: "#ffffff",
-            uirevision: shape
+            uirevision: shape,
+            autosize: true          // 要素のCSS幅に自動追従
         };
 
         const config = {

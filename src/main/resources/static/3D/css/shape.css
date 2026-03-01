@@ -33,6 +33,7 @@
     /* 画面が狭い場合は縦積みにする */
     gap: 20px;
     align-items: flex-start;
+    width: 100%;
 }
 
 .input-column {
@@ -55,4 +56,27 @@
 .preview-column h3 {
     margin-top: 0;
     margin-bottom: 10px;
+}
+
+/* Plotlyプレビューエリア（インラインスタイルの代替） */
+#previewArea3D {
+    width: min(400px, 100%);
+    aspect-ratio: 1 / 1;
+}
+
+/* --- レスポンシブ対応 --- */
+@media screen and (max-width: 768px) {
+    .shape-container {
+        flex-direction: column;
+    }
+
+    .input-column {
+        min-width: 0;
+        width: 100%;
+    }
+
+    .preview-column {
+        min-width: 0;
+        width: 100%;
+    }
 }

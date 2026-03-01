@@ -305,17 +305,34 @@ document.addEventListener("DOMContentLoaded", () => {
             showlegend: true,
             legend: { x: 0, y: 1.05, orientation: "h" },
             margin: { l: 0, r: 0, t: 30, b: 0 },
-            paper_bgcolor: "#ffffff"
+            paper_bgcolor: "#ffffff",
+            autosize: true          // 要素のCSS幅に自動追従
         };
 
         const config = {
             scrollZoom: true,
             displayModeBar: true,
             modeBarButtonsToRemove: ["lasso2d", "select2d"],
-            displaylogo: false
+            displaylogo: false,
+            responsive: true        // 外枠サイズ変更時にグラフを自動リサイズ
         };
 
-        Plotly.newPlot(divId, traces, layout, config);
+        // 描画後: コンテナの実サイズで強制リサイズ（Chromeスケーリング・初期タイミングズレを吸収）
+        Plotly.newPlot(divId, traces, layout, config).then(() => {
+            const el = document.getElementById(divId);
+            const wrapper = el.parentElement;
+
+            // ▼ ResizeObserver を使って、親要素のサイズが確定・変動した瞬間にリサイズさせる
+            const observer = new ResizeObserver(() => {
+                // アニメーションフレーム内で実行し、Chromeの描画負荷とズレを防ぐ
+                requestAnimationFrame(() => {
+                    Plotly.Plots.resize(el);
+                });
+            });
+
+            // 親要素（.canvas-wrapper）のサイズ変動を監視スタート
+            observer.observe(wrapper);
+        });
     }
 
     /**
@@ -346,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const rx = spanX * 0.6;
         const ry = spanY * 0.6;
 
-        const layout = {
+        const layout2D = {
             xaxis: {
                 range: [cx - rx, cx + rx],
                 zeroline: true, zerolinewidth: 2, zerolinecolor: "#333",
@@ -384,17 +401,34 @@ document.addEventListener("DOMContentLoaded", () => {
             legend: { x: 0, y: 1.12, orientation: "h" },
             margin: { l: 60, r: 30, t: 30, b: 60 },
             plot_bgcolor: "#fafafa",
-            paper_bgcolor: "#ffffff"
+            paper_bgcolor: "#ffffff",
+            autosize: true          // 要素のCSS幅に自動追従
         };
 
-        const config = {
+        const config2D = {
             scrollZoom: true,
             displayModeBar: true,
             modeBarButtonsToRemove: ["lasso2d", "select2d"],
-            displaylogo: false
+            displaylogo: false,
+            responsive: true        // 外枠サイズ変更時にグラフを自動リサイズ
         };
 
-        Plotly.newPlot(divId, traces, layout, config);
+        // 描画後: コンテナの実サイズで強制リサイズ（Chromeスケーリング・初期タイミングズレを吸収）
+        Plotly.newPlot(divId, traces, layout2D, config2D).then(() => {
+            const el = document.getElementById(divId);
+            const wrapper = el.parentElement;
+
+            // ▼ ResizeObserver を使って、親要素のサイズが確定・変動した瞬間にリサイズさせる
+            const observer = new ResizeObserver(() => {
+                // アニメーションフレーム内で実行し、Chromeの描画負荷とズレを防ぐ
+                requestAnimationFrame(() => {
+                    Plotly.Plots.resize(el);
+                });
+            });
+
+            // 親要素（.canvas-wrapper）のサイズ変動を監視スタート
+            observer.observe(wrapper);
+        });
     }
 
     /**

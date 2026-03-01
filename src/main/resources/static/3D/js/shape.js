@@ -319,7 +319,8 @@ document.addEventListener("DOMContentLoaded", () => {
             legend: { x: 0, y: 1.05, orientation: "h" },
             margin: { l: 0, r: 0, t: 30, b: 0 },
             paper_bgcolor: "#ffffff",
-            uirevision: shape
+            uirevision: shape,
+            autosize: true          // 要素のCSS幅に自動追従
         };
 
         if (xAxisRange) layout.scene.xaxis.range = xAxisRange;

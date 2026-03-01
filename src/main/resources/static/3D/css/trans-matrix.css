@@ -40,7 +40,8 @@ label {
     border-radius: var(--radius-sm);
     background: #f8fafc;
     padding: 12px 16px 12px 3ch;
-    max-width: 480px;
+    max-width: 100%;
+    overflow-x: auto;
     margin-top: 12px;
 }
 
@@ -72,4 +73,21 @@ label {
 
 .delete-btn:hover {
     background: var(--color-danger-hover);
+}
+
+/* --- レスポンシブ対応 --- */
+@media screen and (max-width: 480px) {
+
+    /* 4×4 行列グリッドを画面幅に合わせて縮小 */
+    .matrix-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+        width: 100%;
+    }
+
+    .matrix-grid-4 input {
+        width: 100%;
+        min-width: 0;
+        padding: 6px 2px;
+        font-size: 0.8rem;
+    }
 }

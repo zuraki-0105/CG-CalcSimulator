@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // --- 描画スケール（表示範囲）を全体像の0.6倍に広げる処理 ---
+        // --- 描画スケール（表示範囲）を全体像の1.2倍に広げる処理 ---
         const allPts = [...origClosed, ...transClosed];
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         for (const p of allPts) {
@@ -166,16 +166,30 @@ document.addEventListener("DOMContentLoaded", () => {
             legend: { x: 0, y: 1.12, orientation: "h" },
             margin: { l: 60, r: 30, t: 30, b: 60 },
             plot_bgcolor: "#fafafa",
-            paper_bgcolor: "#ffffff"
+            paper_bgcolor: "#ffffff",
+            autosize: true          // 要素のCSS幅に自動追従
         };
 
         const config = {
             scrollZoom: true,       // マウスホイールでズーム
             displayModeBar: true,
             modeBarButtonsToRemove: ["lasso2d", "select2d"],
-            displaylogo: false
+            displaylogo: false,
+            responsive: true        // 外枠サイズ変更時にグラフを自動リサイズ
         };
 
-        Plotly.newPlot("plotArea", [traceBefore, traceAfter], layout, config);
+        // 描画後: ResizeObserverを使って親要素のサイズ変動監視を開始
+        Plotly.newPlot("plotArea", [traceBefore, traceAfter], layout, config).then(() => {
+            const el = document.getElementById("plotArea");
+            const wrapper = el.parentElement;
+
+            const observer = new ResizeObserver(() => {
+                requestAnimationFrame(() => {
+                    Plotly.Plots.resize(el);
+                });
+            });
+
+            observer.observe(wrapper);
+        });
     }
 });

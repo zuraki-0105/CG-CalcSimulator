@@ -6,6 +6,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap');
 
 /* --- CSS変数 --- */
+
+/* すべての要素で、paddingとborderをwidthに含めるおまじない */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 :root {
     --color-primary: #3b82f6;
     --color-primary-hover: #2563eb;
@@ -310,15 +316,27 @@ br+hr {
 }
 
 /* --- レスポンシブ対応 --- */
-@media screen and (max-width: 600px) {
+
+/* タブレット・スマホ横向き（〜768px） */
+@media screen and (max-width: 768px) {
     body {
-        padding: 24px 20px 40px;
+        padding: 20px 16px 40px;
     }
 
-    input[type="number"],
-    input[type="text"] {
-        flex-grow: 1;
-        width: 100%;
+    h1 {
+        max-width: 100%;
+    }
+
+    hr {
+        max-width: 100%;
+    }
+
+    form {
+        max-width: 100%;
+    }
+
+    section {
+        max-width: 100%;
     }
 
     select {
@@ -330,6 +348,29 @@ br+hr {
         max-width: 100%;
         overflow-x: auto;
     }
+}
 
+/* スマホ縦向き（〜480px） */
+@media screen and (max-width: 480px) {
+    body {
+        padding: 16px 12px 32px;
+    }
 
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    input[type="number"],
+    input[type="text"] {
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    .btn-group {
+        flex-wrap: wrap;
+    }
+
+    button {
+        width: 100%;
+    }
 }
