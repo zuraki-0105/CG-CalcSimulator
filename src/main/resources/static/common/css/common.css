@@ -5,6 +5,19 @@
 /* --- Google Fonts --- */
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap');
 
+/* --- バージョン表示（全ページ共通） --- */
+/* ※バージョンを更新する場合はここの content を変更してください */
+body::after {
+    content: "v1.0.3";
+    position: fixed;
+    bottom: 5px;
+    right: 8px;
+    font-size: 11px;
+    color: #aaa;
+    pointer-events: none;
+    z-index: 9999;
+}
+
 /* --- CSS変数 --- */
 
 :root {
@@ -361,15 +374,3 @@ br+hr {
     }
 }
 
-/* --- バージョン表示（全ページ共通） --- */
-/* ※バージョンを更新する場合はここの content を変更してください */
-body::after {
-    content: "v1.0.1";
-    position: fixed;
-    bottom: 5px;
-    right: 8px;
-    font-size: 11px;
-    color: #aaa;
-    pointer-events: none;
-    z-index: 9999;
-}

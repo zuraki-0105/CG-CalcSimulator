@@ -1,4 +1,4 @@
-import { clearInputs, setInputs, formatTransformEntry } from "../../common/js/util.js";
+import { clearInputs, setInputs, formatTransformEntry } from "../../common/js/util.js?v=@build.timestamp@";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/trans-matrix.js が読み込まれました");

@@ -1,4 +1,4 @@
-import { toTransformCommands3D, formatTransformEntry3D } from "../../common/js/util.js";
+import { toTransformCommands3D, formatTransformEntry3D } from "../../common/js/util.js?v=@build.timestamp@";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/3D/js/confirm.js が読み込まれました");

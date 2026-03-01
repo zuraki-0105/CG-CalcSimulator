@@ -1,4 +1,4 @@
-import { toTransformCommands3D } from "../../common/js/util.js";
+import { toTransformCommands3D } from "../../common/js/util.js?v=@build.timestamp@";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/3D/js/draw.js が読み込まれました (Plotly版)");

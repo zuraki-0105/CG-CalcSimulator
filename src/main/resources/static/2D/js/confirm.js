@@ -1,4 +1,4 @@
-import { toTransformCommands, formatTransformEntry } from "../../common/js/util.js";
+import { toTransformCommands, formatTransformEntry } from "../../common/js/util.js?v=@build.timestamp@";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/confirm.js が読み込まれました");

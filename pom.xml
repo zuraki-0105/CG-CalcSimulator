@@ -89,6 +89,8 @@
 				<filtering>true</filtering>
 				<includes>
 					<include>**/*.html</include>
+					<include>**/*.js</include>
+					<include>**/*.css</include>
 				</includes>
 			</resource>
 			<resource>
@@ -96,6 +98,8 @@
 				<filtering>false</filtering>
 				<excludes>
 					<exclude>**/*.html</exclude>
+					<exclude>**/*.js</exclude>
+					<exclude>**/*.css</exclude>
 				</excludes>
 			</resource>
 		</resources>
