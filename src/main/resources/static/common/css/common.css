@@ -360,3 +360,16 @@ br+hr {
         width: 100%;
     }
 }
+
+/* --- バージョン表示（全ページ共通） --- */
+/* ※バージョンを更新する場合はここの content を変更してください */
+body::after {
+    content: "v1.0.1";
+    position: fixed;
+    bottom: 5px;
+    right: 8px;
+    font-size: 11px;
+    color: #aaa;
+    pointer-events: none;
+    z-index: 9999;
+}
