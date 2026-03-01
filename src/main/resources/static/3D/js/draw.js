@@ -15,6 +15,15 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = "../../index.html";
     });
 
+    // ▼ 初期ロード時: API待機中に一瞬表示されるのを防ぐため、即座に設定を読み取って不要なコンテナを非表示にする
+    const initShowBefore = sessionStorage.getItem("showDrawBefore") !== "false";
+    const initShowAfter3D = sessionStorage.getItem("showDrawAfter3D") !== "false";
+    const initShowAfter2D = sessionStorage.getItem("showDrawAfter2D") !== "false";
+    document.getElementById("wrapperBefore").style.display = initShowBefore ? "flex" : "none";
+    document.getElementById("wrapperAfter3D").style.display = initShowAfter3D ? "flex" : "none";
+    document.getElementById("wrapperAfter2D").style.display = initShowAfter2D ? "flex" : "none";
+
+    // 非表示処理後にデータ取得を開始
     fetchDrawData();
 
     async function fetchDrawData() {
@@ -339,7 +348,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * Plotly 2D チャートを描画する
      */
     function plot2DChart(divId, traces) {
-        // --- 描画スケール（表示範囲）を全体像の1.1倍に広げる処理 ---
+        // --- 描画スケール（表示範囲）を全体像の1.8倍に広げる処理 ---
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         for (const trace of traces) {
             if (!trace.x || !trace.y) continue;
@@ -360,8 +369,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const spanX = (maxX - minX) === 0 ? 2 : (maxX - minX);
         const spanY = (maxY - minY) === 0 ? 2 : (maxY - minY);
 
-        const rx = spanX * 0.6;
-        const ry = spanY * 0.6;
+        const rx = spanX * 0.9;
+        const ry = spanY * 0.9;
 
         const layout2D = {
             xaxis: {

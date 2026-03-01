@@ -7,11 +7,6 @@
 
 /* --- CSS変数 --- */
 
-/* すべての要素で、paddingとborderをwidthに含めるおまじない */
-*, *::before, *::after {
-    box-sizing: border-box;
-}
-
 :root {
     --color-primary: #3b82f6;
     --color-primary-hover: #2563eb;
@@ -323,18 +318,9 @@ br+hr {
         padding: 20px 16px 40px;
     }
 
-    h1 {
-        max-width: 100%;
-    }
-
-    hr {
-        max-width: 100%;
-    }
-
-    form {
-        max-width: 100%;
-    }
-
+    h1,
+    hr,
+    form,
     section {
         max-width: 100%;
     }

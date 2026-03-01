@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // --- 描画スケール（表示範囲）を全体像の1.2倍に広げる処理 ---
+        // --- 描画スケール（表示範囲）を全体像のx倍に広げる処理 ---
         const allPts = [...origClosed, ...transClosed];
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         for (const p of allPts) {
@@ -119,8 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const spanX = (maxX - minX) === 0 ? 2 : (maxX - minX);
         const spanY = (maxY - minY) === 0 ? 2 : (maxY - minY);
 
-        const rx = spanX * 0.6;
-        const ry = spanY * 0.6;
+        const rx = spanX * 1;//ここで調整
+        const ry = spanY * 1;
 
         const layout = {
             xaxis: {

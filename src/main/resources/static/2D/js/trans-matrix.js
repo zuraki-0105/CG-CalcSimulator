@@ -264,8 +264,9 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!res.ok) throw new Error("描画座標取得失敗");
             const drawData = await res.json();
 
-            drawPreview(drawData.original, a, b, c);
+            // モーダルを先に表示してコンテナ幅を確定させてからPlotly描画
             previewModal.classList.remove("hidden");
+            drawPreview(drawData.original, a, b, c);
         } catch (e) {
             console.error("プレビュー描画エラー:", e);
             alert("プレビューの表示に失敗しました");
@@ -345,7 +346,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 range: [minY, maxY]
             },
             dragmode: "pan",
-            showlegend: true
+            showlegend: true,
+            legend: { x: 0, y: 1.15, orientation: "h" },
+            autosize: true
         };
 
         const config = {

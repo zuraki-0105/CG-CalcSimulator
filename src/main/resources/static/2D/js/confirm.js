@@ -107,7 +107,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // 3×3行列を整形して表示
             const lines = matrix.map(row =>
-                "[ " + row.map(v => v.toFixed(4).padStart(10)).join("  ") + " ]"
+                "[ " + row.map(v => {
+                    let str = v.toFixed(4);
+                    if (str === "-0.0000") str = "0.0000";
+                    return str.padStart(10);
+                }).join("  ") + " ]"
             );
             div.textContent = "M =\n" + lines.join("\n");
 

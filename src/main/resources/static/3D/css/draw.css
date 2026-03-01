@@ -10,10 +10,9 @@
     padding-bottom: 15px;
 }
 
-/* ラッパー側でサイズを制御 */
+/* ラッパー側でサイズを制御（固定幅380px） */
 .canvas-wrapper {
-    /* flex: 1 で親の幅に対して均等に広がるようにする */
-    flex: 1;
+    width: 380px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,10 +21,6 @@
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    /* 縮みすぎ防止の最低幅。これより狭くなる場合はスクロールか折り返し */
-    min-width: 380px;
-    /* max-widthで広がりすぎを防止 */
-    max-width: 380px;
 }
 
 .canvas-wrapper h3 {
@@ -34,9 +29,7 @@
     color: var(--color-text);
 }
 
-/* Plotly div
-   - 自身の固定サイズ指定をやめ、親に100%追従させる
-   - overflow: hidden → SVGを枠内にクリップ */
+/* Plotly div — 親に100%追従、SVGを枠内にクリップ */
 #plotBefore,
 #plotAfter3D,
 #plotAfter {
@@ -48,21 +41,23 @@
     overflow: hidden;
 }
 
+/* ChromeスケーリングによるSVGの突き抜け防止 */
+.js-plotly-plot .plotly,
+.js-plotly-plot .plotly svg {
+    max-width: 100% !important;
+}
+
 /* --- レスポンシブ対応（タブレット・スマホ） --- */
 @media screen and (max-width: 1024px) {
     #canvasContainer3D {
         flex-wrap: wrap;
-        /* 画面が狭い場合は縦積みに許可 */
         justify-content: center;
-        /* 中央寄せ */
         overflow-x: visible;
         gap: 20px;
     }
 
     .canvas-wrapper {
-        /* 折り返した後は可能な限り広がる */
         width: 100%;
         max-width: 600px;
-        /* 一つになった時は少し広めでもOK */
     }
 }
