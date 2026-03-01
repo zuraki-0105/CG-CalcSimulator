@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         }
 
-        location.href = "./draw.html";
+        location.href = "./draw.html?v=@build.timestamp@";
     });
 
     // --- 詳細設定モーダルの制御 ---

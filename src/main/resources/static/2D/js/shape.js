@@ -92,14 +92,14 @@ document.addEventListener("DOMContentLoaded", () => {
             setInputs(ellipseParams, [0, 0, 1, 1]);
         }
 
-        location.href = "./trans-matrix.html";
+        location.href = "./trans-matrix.html?v=@build.timestamp@";
     });
 
     backBtn.addEventListener("click", () => {
         if (history.length > 1) {
             history.back();
         } else {
-            location.href = "/index.html";
+            location.href = "/index.html?v=@build.timestamp@";
         }
     });
 

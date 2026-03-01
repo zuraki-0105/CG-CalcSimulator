@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem("projectionType", projType);
         console.log("========== [画面遷移] confirm.html -> draw.html ==========");
         console.log("[confirm.js] 保存した投影設定 (JS Object):", { projType });
-        location.href = "./draw.html";
+        location.href = "./draw.html?v=@build.timestamp@";
     });
 
     function renderShapeInfo() {

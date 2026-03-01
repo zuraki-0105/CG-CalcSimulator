@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("resetBtn").addEventListener("click", () => {
         sessionStorage.clear();
-        window.location.href = "../../index.html";
+        window.location.href = "../../index.html?v=@build.timestamp@";
     });
 
     // ▼ 初期ロード時: API待機中に一瞬表示されるのを防ぐため、即座に設定を読み取って不要なコンテナを非表示にする

@@ -159,14 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const queue = JSON.parse(sessionStorage.getItem("transformQueue") || "[]");
         console.log("========== [画面遷移] trans-matrix.html -> confirm.html ==========");
         console.log("[trans-matrix.js] 引き継ぐ変換行列キュー (パース済 JS Array):", queue);
-        window.location.href = "confirm.html";
+        window.location.href = "confirm.html?v=@build.timestamp@";
     });
 
     backBtn.addEventListener("click", () => {
         if (history.length > 1) {
             history.back();
         } else {
-            location.href = "./shape.html";
+            location.href = "./shape.html?v=@build.timestamp@";
         }
     });
 

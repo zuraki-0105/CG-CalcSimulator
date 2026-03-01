@@ -38,6 +38,8 @@ compile_log.txt
 
 ### Deploy Guide ###
 manual_deploy.md
+deploy.sh
+deploy.ps1
 
 ### Specification ###
 specification.txt

@@ -1,4 +1,4 @@
-import { toTransformCommands } from "../../common/js/util.js?v=@build.timestamp@";
+import { toTransformCommands } from "../../common/js/util.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("/2d/js/draw.js が読み込まれました (Plotly版)");
@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // --- 描画スケール（表示範囲）を全体像から計算する処理 ---
+        // --- 描画スケール（表示範囲）を全体像のx倍に広げる処理 ---
         const allPts = [...origClosed, ...transClosed];
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
         for (const p of allPts) {
@@ -119,21 +119,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const spanX = (maxX - minX) === 0 ? 2 : (maxX - minX);
         const spanY = (maxY - minY) === 0 ? 2 : (maxY - minY);
 
-        // コンテナのアスペクト比を考慮: PC・スマホ問わず図形が中央に収まるよう
-        // 両軸とも明示的に range を指定し、scaleanchor を維持する
-        const plotEl = document.getElementById("plotArea");
-        const containerW = plotEl.clientWidth || 400;
-        const containerH = plotEl.clientHeight || 400;
-        // マージン分を引いた描画エリア比率
-        const marginL = 60, marginR = 30, marginT = 30, marginB = 60;
-        const drawW = Math.max(containerW - marginL - marginR, 100);
-        const drawH = Math.max(containerH - marginT - marginB, 100);
-        const aspectRatio = drawW / drawH; // 横幅÷縦幅
-
-        // 両軸同じスパンを基準にしてアスペクト比に合わせて拡張
-        const span = Math.max(spanX, spanY) * 2.0; // 余白2.0倍(引きで表示)
-        const rx = span / 2 * Math.max(1, aspectRatio);
-        const ry = span / 2 * Math.max(1, 1 / aspectRatio);
+        const rx = spanX * 1;//ここで調整
+        const ry = spanY * 1;
 
         const layout = {
             xaxis: {
@@ -142,13 +129,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
                 gridcolor: "#e0e0e0",
-                scaleanchor: "y",
+                scaleanchor: "y",    // x,y 比率を固定
                 scaleratio: 1,
                 exponentformat: "none",
                 hoverformat: ".3~f"
             },
             yaxis: {
-                range: [cy - ry, cy + ry],
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",

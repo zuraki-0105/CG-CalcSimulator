@@ -8,7 +8,7 @@
 /* --- バージョン表示（全ページ共通） --- */
 /* ※バージョンを更新する場合はここの content を変更してください */
 body::after {
-    content: "v1.0.5";
+    content: "v1.0.10";
     position: fixed;
     bottom: 5px;
     right: 8px;
@@ -373,4 +373,3 @@ br+hr {
         width: 100%;
     }
 }
-

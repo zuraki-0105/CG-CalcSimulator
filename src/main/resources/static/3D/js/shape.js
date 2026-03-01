@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log("========== [画面遷移] shape.html -> trans-matrix.html ==========");
             console.log("[shape.js] 保存した直方体データ (JS Object):", { x, y, z, w, h, d });
-            window.location.href = "trans-matrix.html";
+            window.location.href = "trans-matrix.html?v=@build.timestamp@";
             setInputs(cuboidParams, [0, 0, 0, 1, 1, 1]);
         } else if (shape === "sphere") {
             const cx = document.getElementById("sphereCx").value;
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log("========== [画面遷移] shape.html -> trans-matrix.html ==========");
             console.log("[shape.js] 保存した球体データ (JS Object):", { cx, cy, cz, rx, ry, rz });
-            window.location.href = "trans-matrix.html";
+            window.location.href = "trans-matrix.html?v=@build.timestamp@";
             setInputs(sphereParams, [0, 0, 0, 1, 1, 1]);
         }
     });
@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (history.length > 1) {
             history.back();
         } else {
-            location.href = "/index.html";
+            location.href = "/index.html?v=@build.timestamp@";
         }
     });
 
