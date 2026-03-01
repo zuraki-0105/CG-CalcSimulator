@@ -58,7 +58,7 @@ label {
 
 /* 削除ボタン */
 .delete-btn {
-    padding: 4px 10px;
+    padding: 4px 0;
     font-size: 0.75rem;
     font-weight: 600;
     color: #fff;
@@ -67,7 +67,9 @@ label {
     border-radius: var(--radius-sm);
     cursor: pointer;
     transition: background var(--transition);
-    min-width: auto;
+    width: 40px;
+    flex-shrink: 0;
+    text-align: center;
     margin-right: 8px;
 }
 

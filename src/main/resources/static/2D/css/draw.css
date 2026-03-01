@@ -25,11 +25,6 @@
     overflow: hidden;
 }
 
-/* ChromeスケーリングによるSVGの突き抜け防止 */
-.js-plotly-plot .plotly,
-.js-plotly-plot .plotly svg {
-    max-width: 100% !important;
-}
 
 /* --- レスポンシブ対応 --- */
 @media screen and (max-width: 768px) {

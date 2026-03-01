@@ -102,39 +102,47 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         };
 
-        // --- 描画スケール（表示範囲）を全体像のx倍に広げる処理 ---
-        const allPts = [...origClosed, ...transClosed];
-        let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-        for (const p of allPts) {
-            if (p.x === null || p.y === null || isNaN(p.x) || isNaN(p.y)) continue;
-            if (p.x < minX) minX = p.x;
-            if (p.x > maxX) maxX = p.x;
-            if (p.y < minY) minY = p.y;
-            if (p.y > maxY) maxY = p.y;
-        }
-        if (minX === Infinity) { minX = -1; maxX = 1; minY = -1; maxY = 1; }
+        // ===== 軸範囲の計算（autorange相当 + 1回分ズームアウト） =====
+        const allX = [...origClosed.map(p => p.x), ...transClosed.map(p => p.x)];
+        const allY = [...origClosed.map(p => p.y), ...transClosed.map(p => p.y)];
 
-        const cx = (minX + maxX) / 2;
-        const cy = (minY + maxY) / 2;
-        const spanX = (maxX - minX) === 0 ? 2 : (maxX - minX);
-        const spanY = (maxY - minY) === 0 ? 2 : (maxY - minY);
+        const xMin = Math.min(...allX);
+        const xMax = Math.max(...allX);
+        const yMin = Math.min(...allY);
+        const yMax = Math.max(...allY);
 
-        const rx = spanX * 1;//ここで調整
-        const ry = spanY * 1;
+        // データ範囲のスパン（0除算防止）
+        const xSpan = xMax - xMin || 1;
+        const ySpan = yMax - yMin || 1;
+
+        // 35%のマージン
+        const margin = 0.35;
+
+        // scaleanchor で1:1に固定されているため、大きい方の幅に合わせる
+        const maxSpan = Math.max(xSpan, ySpan);
+        const pad = maxSpan * margin;
+
+        const xCenter = (xMin + xMax) / 2;
+        const yCenter = (yMin + yMax) / 2;
+        const halfRange = maxSpan / 2 + pad;
 
         const layout = {
             xaxis: {
-                range: [cx - rx, cx + rx],
+                range: [xCenter - halfRange, xCenter + halfRange],
+                autorange: false,
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
                 gridcolor: "#e0e0e0",
                 scaleanchor: "y",    // x,y 比率を固定
                 scaleratio: 1,
+                constrain: "domain", // rangeではなく描画領域を調整して比率を維持
                 exponentformat: "none",
                 hoverformat: ".3~f"
             },
             yaxis: {
+                range: [yCenter - halfRange, yCenter + halfRange],
+                autorange: false,
                 zeroline: true,
                 zerolinewidth: 2,
                 zerolinecolor: "#333",
@@ -178,18 +186,24 @@ document.addEventListener("DOMContentLoaded", () => {
             responsive: true        // 外枠サイズ変更時にグラフを自動リサイズ
         };
 
-        // 描画後: ResizeObserverを使って親要素のサイズ変動監視を開始
-        Plotly.newPlot("plotArea", [traceBefore, traceAfter], layout, config).then(() => {
-            const el = document.getElementById("plotArea");
-            const wrapper = el.parentElement;
-
-            const observer = new ResizeObserver(() => {
+        // responsive: true により Plotly 自身がウィンドウリサイズを検知して適切にリサイズする
+        // 自前の ResizeObserver は scaleanchor との組み合わせで無限ループの原因になるため使用しない
+        Plotly.newPlot("plotArea", [traceBefore, traceAfter], layout, config)
+            .then(() => {
+                // スマホでの描画遅延を防ぐため、描画完了後に強制リサイズ
                 requestAnimationFrame(() => {
-                    Plotly.Plots.resize(el);
+                    Plotly.Plots.resize("plotArea");
                 });
             });
-
-            observer.observe(wrapper);
-        });
     }
+
+    // BFCache（ページ戻り）時にPlotlyを再描画
+    window.addEventListener("pageshow", (event) => {
+        if (event.persisted) {
+            const plotEl = document.getElementById("plotArea");
+            if (plotEl && plotEl.data) {
+                Plotly.Plots.resize("plotArea");
+            }
+        }
+    });
 });

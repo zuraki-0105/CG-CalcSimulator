@@ -154,3 +154,16 @@ label {
     gap: 12px;
     margin-top: 24px;
 }
+
+/* --- スマホ向け: モーダルを上寄せにして決定ボタンがタブバーに隠れないようにする --- */
+@media screen and (max-width: 768px) {
+    .modal-overlay {
+        align-items: flex-start;
+        padding-top: 8vh;
+    }
+
+    .settings-modal-content {
+        width: 90%;
+        max-height: 70vh;
+    }
+}

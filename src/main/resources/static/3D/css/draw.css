@@ -54,10 +54,13 @@
         justify-content: center;
         overflow-x: visible;
         gap: 20px;
+        width: 100%;
     }
 
     .canvas-wrapper {
         width: 100%;
         max-width: 600px;
+        min-width: 0;
+        flex-shrink: 0;
     }
 }
