@@ -12,7 +12,16 @@
 </head>
 
 <body>
-    <h1>3D 描画結果</h1>
+    <div class="page-title">
+        <h1>3D 描画結果</h1>
+        <button class="help-btn" id="helpBtn" aria-label="このページの説明">?</button>
+        <div class="help-popup" id="helpPopup">
+            <p><strong>3D 描画結果</strong>ページです。</p>
+            <p>変換前（元の3D図形）・変換後（3D）・投影結果（2D）の3つの図形を表示しています。</p>
+            <p>図中のカメラマーク📷をクリックすると画像を保存できます。</p>
+            <p>「はじめから」を押すと最初の選択画面に戻ります。</p>
+        </div>
+    </div>
 
     <div id="canvasContainer3D">
         <div class="canvas-wrapper" id="wrapperBefore">
@@ -36,6 +45,7 @@
     </div>
 
     <script src="../js/draw.js?v=@build.timestamp@" type="module"></script>
+    <script src="../../common/js/help.js?v=@build.timestamp@"></script>
 </body>
 
 </html>

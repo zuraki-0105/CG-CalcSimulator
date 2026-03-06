@@ -11,7 +11,15 @@
 </head>
 
 <body>
-    <h1>3D 入力内容確認</h1>
+    <div class="page-title">
+        <h1>3D 入力内容確認</h1>
+        <button class="help-btn" id="helpBtn" aria-label="このページの説明">?</button>
+        <div class="help-popup" id="helpPopup">
+            <p><strong>3D 入力内容確認</strong>ページです。</p>
+            <p>これまでに入力した図形情報・変換行列・合成変換行列および投影設定を確認できます。</p>
+            <p>「描画」を押すと3D変換・投影の結果を描画します。設定を変更する場合は「戻る」を押してください。</p>
+        </div>
+    </div>
 
     <section>
         <h3>図形情報</h3>
@@ -110,6 +118,7 @@
     </div>
 
     <script src="../js/confirm.js?v=@build.timestamp@" type="module"></script>
+    <script src="../../common/js/help.js?v=@build.timestamp@"></script>
 </body>
 
 </html>

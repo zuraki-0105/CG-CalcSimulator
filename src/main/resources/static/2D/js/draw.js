@@ -40,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // 変換リスト（共通関数で変換）
         req.transforms = toTransformCommands(queue);
 
+        // 鏡映変換の直線情報を抽出
+        const reflections = queue.filter(t => t.type === "reflection");
+
         try {
             console.log("========== [Fetch API 送信 (POST)] ==========");
             console.log("[draw.js] サーバーへ送信する JSON (文字列化前 JS Object):", req);
@@ -58,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.log("========== [Fetch API 受信 (レスポンス)] ==========");
             console.log("[draw.js] サーバー・Javaから受け取った JSON (パース済 JS Object):", data);
 
-            drawShapes(data);
+            drawShapes(data, reflections);
 
         } catch (err) {
             console.error("描画データの取得に失敗:", err);
@@ -68,8 +71,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     /**
      * Plotly で変換前・変換後の図形を描画する
+     * @param {Object} data - サーバーから受け取った描画データ
+     * @param {Array}  reflections - 鏡映変換エントリの配列 [{a, b, c}, ...]
      */
-    function drawShapes(data) {
+    function drawShapes(data, reflections = []) {
         const original = data.original;
         const transformed = data.transformed;
 
@@ -125,6 +130,40 @@ document.addEventListener("DOMContentLoaded", () => {
         const xCenter = (xMin + xMax) / 2;
         const yCenter = (yMin + yMax) / 2;
         const halfRange = maxSpan / 2 + pad;
+
+        // ===== 鏡映直線トレースの生成 =====
+        // 直線の描画範囲はグラフ軸範囲より十分広くとる
+        const lineColors = ["#6366f1", "#f59e0b", "#10b981", "#ec4899", "#0ea5e9"];
+        const reflectionTraces = reflections.map((r, i) => {
+            const { a, b, c } = r;
+            // 直線の式を凡例用に整形
+            const lineLabel = buildLineLabel(a, b, c);
+            const extRange = halfRange * 3; // 軸より十分外まで伸ばす
+
+            let lineX, lineY;
+            if (Math.abs(b) < 1e-9) {
+                // 垂直線: x = -c/a
+                const lx = -c / a;
+                lineX = [lx, lx];
+                lineY = [yCenter - extRange, yCenter + extRange];
+            } else {
+                // y = (-a/b)x - c/b
+                lineX = [xCenter - extRange, xCenter + extRange];
+                lineY = lineX.map(x => (-a * x - c) / b);
+            }
+
+            return {
+                x: lineX,
+                y: lineY,
+                mode: "lines",
+                name: `鏡映軸: ${lineLabel}`,
+                line: {
+                    color: lineColors[i % lineColors.length],
+                    width: 1.5,
+                    dash: "dot"
+                }
+            };
+        });
 
         const layout = {
             xaxis: {
@@ -188,13 +227,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // responsive: true により Plotly 自身がウィンドウリサイズを検知して適切にリサイズする
         // 自前の ResizeObserver は scaleanchor との組み合わせで無限ループの原因になるため使用しない
-        Plotly.newPlot("plotArea", [traceBefore, traceAfter], layout, config)
+        Plotly.newPlot("plotArea", [traceBefore, traceAfter, ...reflectionTraces], layout, config)
             .then(() => {
                 // スマホでの描画遅延を防ぐため、描画完了後に強制リサイズ
                 requestAnimationFrame(() => {
                     Plotly.Plots.resize("plotArea");
                 });
             });
+    }
+
+    /**
+     * ax + by + c = 0 を人間が読みやすい式の文字列に変換する
+     * 例: (1, -1, 0) => "x - y = 0"
+     *      (2,  0, 3) => "2x + 3 = 0"
+     *      (0,  1, 0) => "y = 0"
+     */
+    function buildLineLabel(a, b, c) {
+        const fmt = (coef, varName, isFirst) => {
+            if (coef === 0) return "";
+            const absCoef = Math.abs(coef);
+            const sign = coef > 0 ? (isFirst ? "" : " + ") : (isFirst ? "-" : " - ");
+            const coefStr = absCoef === 1 ? "" : String(Number(absCoef.toPrecision(6)));
+            return `${sign}${coefStr}${varName}`;
+        };
+
+        let lhs = "";
+        let first = true;
+        if (a !== 0) { lhs += fmt(a, "x", first); first = false; }
+        if (b !== 0) { lhs += fmt(b, "y", first); first = false; }
+        if (c !== 0) { lhs += fmt(c, "", first); }
+        if (!lhs) lhs = "0";
+
+        return `${lhs} = 0`;
     }
 
     // BFCache（ページ戻り）時にPlotlyを再描画

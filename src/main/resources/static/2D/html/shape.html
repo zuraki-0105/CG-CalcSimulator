@@ -12,7 +12,14 @@
 </head>
 
 <body>
-  <h1>2D 図形選択</h1>
+  <div class="page-title">
+    <h1>2D 図形選択</h1>
+    <button class="help-btn" id="helpBtn" aria-label="このページの説明">?</button>
+    <div class="help-popup" id="helpPopup">
+      <p><strong>2D 図形選択</strong>ページです。</p>
+      <p>ドロップダウンから図形を選択し、各パラメータを入力してください。右(または下)側のプレビューでリアルタイムに確認できます。</p>
+    </div>
+  </div>
   <p>図形を選択してください。</p>
 
   <div class="shape-container">
@@ -72,6 +79,7 @@
 
   <script src="../../common/js/util.js?v=@build.timestamp@" type="module"></script>
   <script src="../js/shape.js?v=@build.timestamp@" type="module"></script>
+  <script src="../../common/js/help.js?v=@build.timestamp@"></script>
 </body>
 
 </html>
