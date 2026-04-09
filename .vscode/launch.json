@@ -1,0 +1,51 @@
+{
+    // IntelliSense を使用して利用可能な属性を学べます。
+    // 既存の属性の説明をホバーして表示します。
+    // 詳細情報は次を確認してください: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "CgCalcSimulationApplication",
+            "request": "launch",
+            "mainClass": "com.example.CG_CalcSimulation.CgCalcSimulationApplication",
+            "projectName": "CG_CalcSimulation",
+            "vmArgs": "-Dspring.profiles.active=local"
+        },
+        {
+            "type": "java",
+            "name": "MainApp",
+            "request": "launch",
+            "mainClass": "com.example.CG_CalcSimulation.gui.Launcher",
+            "projectName": "CG_CalcSimulation"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "com.example.CG_CalcSimulation.main.Main",
+            "projectName": "CG_CalcSimulation"
+        },
+        {
+            "type": "java",
+            "name": "Main2",
+            "request": "launch",
+            "mainClass": "com.example.CG_CalcSimulation.main.Main2",
+            "projectName": "CG_CalcSimulation"
+        },
+        {
+            "type": "java",
+            "name": "MainTest",
+            "request": "launch",
+            "mainClass": "com.example.CG_CalcSimulation.main.MainTest",
+            "projectName": "CG_CalcSimulation"
+        }
+    ]
+}
